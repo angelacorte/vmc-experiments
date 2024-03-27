@@ -19,6 +19,10 @@ repositories {
  */
 sourceSets {
     main {
+        dependencies{
+            implementation(libs.bundles.alchemist)
+            implementation(libs.bundles.collektive)
+        }
         resources {
             srcDir("src/main/protelis")
         }
@@ -40,7 +44,6 @@ multiJvm {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation(libs.bundles.alchemist.protelis)
     if (!GraphicsEnvironment.isHeadless()) {
         implementation("it.unibo.alchemist:alchemist-swingui:${libs.versions.alchemist.get()}")
     }
