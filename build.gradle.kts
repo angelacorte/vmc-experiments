@@ -1,6 +1,7 @@
 import org.gradle.configurationcache.extensions.capitalized
 import java.awt.GraphicsEnvironment
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 plugins {
     application
@@ -25,6 +26,11 @@ sourceSets {
         }
         resources {
             srcDir("src/main/protelis")
+        }
+    }
+    test {
+        dependencies{
+            implementation(libs.bundles.kotlin.testing.common)
         }
     }
 }
@@ -67,19 +73,32 @@ val heap: Long = maxHeap ?: if (System.getProperty("os.name").lowercase().contai
 val taskSizeFromProject: Int? by project
 val taskSize = taskSizeFromProject ?: 512
 val threadCount = maxOf(1, minOf(Runtime.getRuntime().availableProcessors(), heap.toInt() / taskSize))
+val alchemistGroupBatch = "Run batch simulations"
+val alchemistGroupGraphic = "Run graphic simulations with Alchemist"
 
-val alchemistGroup = "Run Alchemist"
 /*
  * This task is used to run all experiments in sequence
  */
 val runAllGraphic by tasks.register<DefaultTask>("runAllGraphic") {
-    group = alchemistGroup
+    group = alchemistGroupGraphic
     description = "Launches all simulations with the graphic subsystem enabled"
 }
 val runAllBatch by tasks.register<DefaultTask>("runAllBatch") {
-    group = alchemistGroup
+    group = alchemistGroupBatch
     description = "Launches all experiments"
 }
+
+fun String.capitalizeString(): String =
+    this.replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase(
+                Locale.getDefault(),
+            )
+        } else {
+            it.toString()
+        }
+    }
+
 /*
  * Scan the folder with the simulation files, and create a task for each one of them.
  */
@@ -88,14 +107,13 @@ File(rootProject.rootDir.path + "/src/main/yaml").listFiles()
     ?.sortedBy { it.nameWithoutExtension }
     ?.forEach {
         fun basetask(name: String, additionalConfiguration: JavaExec.() -> Unit = {}) = tasks.register<JavaExec>(name) {
-            group = alchemistGroup
             description = "Launches graphic simulation ${it.nameWithoutExtension}"
             mainClass.set("it.unibo.alchemist.Alchemist")
             classpath = sourceSets["main"].runtimeClasspath
             args("run", it.absolutePath)
             javaLauncher.set(
                 javaToolchains.launcherFor {
-                    languageVersion.set(JavaLanguageVersion.of(usesJvm))
+                    languageVersion.set(JavaLanguageVersion.of(multiJvm.latestJava))
                 },
             )
             if (System.getenv("CI") == "true") {
@@ -104,8 +122,9 @@ File(rootProject.rootDir.path + "/src/main/yaml").listFiles()
                 this.additionalConfiguration()
             }
         }
-        val capitalizedName = it.nameWithoutExtension.capitalized()
+        val capitalizedName = it.nameWithoutExtension.capitalizeString()
         val graphic by basetask("run${capitalizedName}Graphic") {
+            group = alchemistGroupGraphic
             args(
                 "--override",
                 "monitors: { type: SwingGUI, parameters: { graphics: effects/${it.nameWithoutExtension}.json } }",
@@ -115,20 +134,11 @@ File(rootProject.rootDir.path + "/src/main/yaml").listFiles()
         }
         runAllGraphic.dependsOn(graphic)
         val batch by basetask("run${capitalizedName}Batch") {
+            group = alchemistGroupBatch
             description = "Launches batch experiments for $capitalizedName"
             maxHeapSize = "${minOf(heap.toInt(), Runtime.getRuntime().availableProcessors() * taskSize)}m"
             File("data").mkdirs()
-            args("--override",
-                """
-                    launcher: {
-                        parameters: {
-                            batch: [ seed, spacing, error ],
-                            showProgress: true,
-                            autoStart: true,
-                            parallelism: $threadCount,
-                        }
-                    }
-                """.trimIndent())
         }
         runAllBatch.dependsOn(batch)
     }
+
