@@ -1,11 +1,12 @@
-import org.gradle.configurationcache.extensions.capitalized
 import java.awt.GraphicsEnvironment
 import java.io.ByteArrayOutputStream
 import java.util.*
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
     alias(libs.plugins.gitSemVer)
+    alias(libs.plugins.collektive)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.qa)
     alias(libs.plugins.multiJvmTesting)
@@ -142,3 +143,6 @@ File(rootProject.rootDir.path + "/src/main/yaml").listFiles()
         runAllBatch.dependsOn(batch)
     }
 
+tasks.withType(KotlinCompile::class).all {
+    kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
+}
