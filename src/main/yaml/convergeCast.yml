@@ -1,0 +1,40 @@
+# result:
+#  {0 13, 1 $,  2 $, 3  $,
+#   4 $, 5 $,  6 $,  7  $,
+#   8 $, 9 $, 10 $, 11 13}
+
+network-model:
+  type: ConnectWithinDistance
+  parameters: [2.5]
+
+incarnation: collektive
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [it.unibo.collektive.lib.ConvergeAndSpreadKt.convergeAndSpread]
+
+deployments:
+  - type: Rectangle
+    parameters: [ 200, 0, 0, 20, 20 ]
+    programs:
+      - *program
+    contents:
+      - molecule: source
+        concentration: false
+  - type: Point
+    parameters: [ 2, 2 ]
+    programs:
+      - *program
+    contents:
+      - molecule: source
+        concentration: true
+#
+#displacements:
+#  - in:
+#      type: Grid
+#      parameters: [0, 0, 3, 2, 1, 1, 0.1, 0.1]
+#    programs:
+#      - *program
