@@ -2,9 +2,13 @@ package it.unibo.collektive.lib
 
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
+import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 import it.unibo.collektive.field.Field.Companion.hood
 import it.unibo.collektive.field.min
+
+// A field mapping input channels to this device to the value channelled in
+data class Channel<T>(val isFromChild: Boolean, val localValue: T)
 
 /**
  * Aggregate a field of type T within a spanning tree built according to the maximum
@@ -18,19 +22,51 @@ fun <T, ID: Comparable<ID>> Aggregate<ID>.convergeCast(
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
     reduce: (T, T) -> T,
 ): T = share(local) { field ->
-    val neighboringPotential = neighboring(potential)
-    val localMinimum = neighboringPotential.min(potential)
-    val parent: ID = neighboringPotential.asSequence()
-        .filter { (_, v) -> v == localMinimum }
-        .map { it.first }
-        .reduce(disambiguateParent)
+    val parent = findParent(potential, disambiguateParent)
     val neighborParents = neighboring(parent) // Each device is mapped to its parent
-    // A field mapping input channels to this device to the value channelled in
-    data class Channel(val isFromChild: Boolean, val localValue: T)
     val childrenValues = neighborParents.alignedMap(field) { itsParent, itsLocal ->
         Channel(isFromChild = itsParent == localId, itsLocal)
     }
     childrenValues.fold(local) { accumulator, channel ->
         if (channel.isFromChild) reduce(accumulator, channel.localValue) else accumulator
     }
+}
+
+
+fun <ID: Comparable<ID>> Aggregate<ID>.spreadToChildren(
+    potential: Double,
+    localResource: Double,
+    localSuccess: Double,
+    disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
+): Double = exchanging(localResource) { resource ->
+    val parent = findParent(potential, disambiguateParent) //the parent of this device
+    val myLocalResources = resource.mapWithId { id, neighborResource ->
+        if (id == parent) neighborResource else 0.0
+    }.fold(localResource) { a, b -> a + b }
+    val neighborParents = neighboring(parent) // Each device is mapped to its parent
+    val childrenSuccess: Field<ID, Double> = neighborParents
+        .alignedMap(neighboring(localSuccess)) { itsParent, itsSuccess ->
+            when {
+                itsParent == localId -> itsSuccess
+                else -> 0.0
+            }
+        }
+    val overallChildrenSuccess = childrenSuccess.hood(Double.POSITIVE_INFINITY) { a, b -> a + b }
+//    val myInitialSuccess = localSuccess - overallChildrenSuccess
+    childrenSuccess.map { if (overallChildrenSuccess <= 0) 0.0 else it * myLocalResources / overallChildrenSuccess }
+        .yielding {
+            neighboring(myLocalResources)
+        }
+}.localValue
+
+fun <ID: Comparable<ID>> Aggregate<ID>.findParent(
+    potential: Double,
+    disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
+): ID {
+    val neighboringPotential = neighboring(potential)
+    val localMinimum = neighboringPotential.min(potential)
+    return neighboringPotential.asSequence()
+        .filter { (_, v) -> v == localMinimum }
+        .map { it.first }
+        .reduce(disambiguateParent) //the parent
 }
