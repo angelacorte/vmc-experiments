@@ -1,12 +1,12 @@
 [
   {
     "type": "class it.unibo.alchemist.boundary.gui.effects.DrawShape",
-    "curIncarnation": "protelis",
-    "mode": "FILL_ELLIPSE",
+    "curIncarnation": "collektive",
+    "mode": "FILL_RECTANGLE",
     "red": {
       "max": 255,
       "min": 0,
-      "val": 0
+      "val": 255
     },
     "blue": {
       "max": 255,
@@ -31,19 +31,19 @@
     "size": {
       "max": 100,
       "min": 0,
-      "val": 19
+      "val": 37
     },
-    "molFilter": false,
-    "molString": "org:protelis:tutorial:distanceTo",
-    "molPropertyFilter": false,
-    "property": "",
+    "molFilter": true,
+    "molString": "source",
+    "molPropertyFilter": true,
+    "property": "if (it \u003d\u003d true) 1 else 0",
     "writingPropertyValue": false,
-    "c": "HUE",
+    "c": "ALPHA",
     "reverse": false,
     "propoom": {
       "max": 10,
       "min": -10,
-      "val": 1
+      "val": 0
     },
     "minprop": {
       "max": 10,
@@ -53,15 +53,15 @@
     "maxprop": {
       "max": 10,
       "min": -10,
-      "val": 2
+      "val": 1
     },
     "colorCache": {
-      "value": -16776961
+      "value": -65536
     }
   },
   {
     "type": "class it.unibo.alchemist.boundary.gui.effects.DrawShape",
-    "curIncarnation": "protelis",
+    "curIncarnation": "collektive",
     "mode": "FILL_ELLIPSE",
     "red": {
       "max": 255,
@@ -91,15 +91,15 @@
     "size": {
       "max": 100,
       "min": 0,
-      "val": 17
+      "val": 22
     },
     "molFilter": true,
-    "molString": "org:protelis:tutorial:distanceTo",
+    "molString": "resource",
     "molPropertyFilter": true,
-    "property": "",
-    "writingPropertyValue": false,
+    "property": "it.toInt()",
+    "writingPropertyValue": true,
     "c": "HUE",
-    "reverse": false,
+    "reverse": true,
     "propoom": {
       "max": 10,
       "min": -10,
@@ -108,12 +108,12 @@
     "minprop": {
       "max": 10,
       "min": -10,
-      "val": 0
+      "val": -1
     },
     "maxprop": {
       "max": 10,
       "min": -10,
-      "val": 2
+      "val": 10
     },
     "colorCache": {
       "value": -16776961
