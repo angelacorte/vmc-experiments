@@ -1,6 +1,5 @@
 package it.unibo.alchemist.actions
 
-import io.kotest.mpp.env
 import it.unibo.alchemist.model.Action
 import it.unibo.alchemist.model.Context
 import it.unibo.alchemist.model.Environment
@@ -23,23 +22,16 @@ class CloningAction<T, P : Position<out P>>(
 
     override fun execute() {
         val cloningMolecule = SimpleMolecule("cloning")
-//        val localSuccessMolecule = SimpleMolecule("localSuccess")
-//        val potentialMolecule = SimpleMolecule("potential")
-//        val resourceMolecule = SimpleMolecule("resource")
-//        val sourceMolecule = SimpleMolecule("source")
-//        val successMolecule = SimpleMolecule("success")
-
-        if(node.contents[cloningMolecule] == true) {
+        if(node.contains(cloningMolecule) && node.contents[cloningMolecule] == true) {
             node.removeConcentration(cloningMolecule)
 
             val cloneOfThis = node.cloneNode(environment.simulation.time)
-//            node.reactions.forEach { it.cloneOnNewNode(cloneOfThis, environment.simulation.time) }
-            node.reactions.forEach { r -> r.actions.forEach { a -> a.cloneAction(cloneOfThis, r) } }
-            cloneOfThis.setConcentration(SimpleMolecule("SONOSTATOCLONATO"), true as T)
-//            cloneOfThis.reactions.forEach { it.actions.forEach { b -> b.cloneAction(cloneOfThis, it) } }
+            node.reactions.forEach { it.cloneOnNewNode(cloneOfThis, environment.simulation.time) }
+            node.contents.forEach { cloneOfThis.removeConcentration(it.key) }
+            node.properties.forEach { it.cloneOnNewNode(cloneOfThis) }
             val position = environment.getPosition(this.node)
             val coordinates =
-                position.coordinates.map { it + (0.5 - randomGenerator.nextDouble()) * 2 }.map { it }
+                position.coordinates.map { it + (0.5 - randomGenerator.nextDouble()) * 2 }
             val updatedPosition = environment.makePosition(*coordinates.toTypedArray())
             environment.addNode(cloneOfThis, updatedPosition)
         }
@@ -47,12 +39,3 @@ class CloningAction<T, P : Position<out P>>(
 
     override fun getContext(): Context = Context.NEIGHBORHOOD
 }
-
-/*
-            cloneOfThis.setConcentration(cloningMolecule, false as T)
-            cloneOfThis.setConcentration(localSuccessMolecule, 0.0 as T)
-            cloneOfThis.setConcentration(potentialMolecule, 0.0 as T)
-            cloneOfThis.setConcentration(resourceMolecule, 0.0 as T)
-            cloneOfThis.setConcentration(sourceMolecule, false as T)
-            cloneOfThis.setConcentration(successMolecule, 0.0 as T)
- */
