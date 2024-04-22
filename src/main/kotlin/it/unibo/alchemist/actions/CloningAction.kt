@@ -10,7 +10,6 @@ import it.unibo.alchemist.model.actions.AbstractAction
 import it.unibo.alchemist.model.molecules.SimpleMolecule
 import org.apache.commons.math3.random.RandomGenerator
 
-@Suppress("UNCHECKED_CAST")
 class CloningAction<T, P : Position<out P>>(
     node: Node<T>,
     val environment: Environment<T, P>,
@@ -31,7 +30,7 @@ class CloningAction<T, P : Position<out P>>(
             node.properties.forEach { it.cloneOnNewNode(cloneOfThis) }
             val position = environment.getPosition(this.node)
             val coordinates =
-                position.coordinates.map { it + (0.5 - randomGenerator.nextDouble()) * 2 }
+                position.coordinates.map { it + (0.5 - randomGenerator.nextDouble()) * 6 }
             val updatedPosition = environment.makePosition(*coordinates.toTypedArray())
             environment.addNode(cloneOfThis, updatedPosition)
         }
