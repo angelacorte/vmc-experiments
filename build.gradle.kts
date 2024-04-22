@@ -24,6 +24,7 @@ sourceSets {
         dependencies{
             implementation(libs.bundles.alchemist)
             implementation(libs.bundles.collektive)
+            implementation(kotlin("reflect"))
         }
         resources {
             srcDir("src/main/protelis")
