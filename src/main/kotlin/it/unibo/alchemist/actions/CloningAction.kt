@@ -26,7 +26,6 @@ class CloningAction<T, P : Position<out P>>(
 
             val cloneOfThis = node.cloneNode(environment.simulation.time)
             node.reactions.forEach { it.cloneOnNewNode(cloneOfThis, environment.simulation.time) }
-            node.contents.forEach { cloneOfThis.removeConcentration(it.key) }
             node.properties.forEach { it.cloneOnNewNode(cloneOfThis) }
             val position = environment.getPosition(this.node)
             val coordinates =
