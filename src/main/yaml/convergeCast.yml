@@ -31,7 +31,7 @@ seeds:
   simulation: *seed
 
 layers:
-  - type: SuccessSourceLayer
+  - type: BidimensionalGaussianLayer
     parameters: [10.0, 10.0, 40.0, 10.0]
     molecule: successSource
 
