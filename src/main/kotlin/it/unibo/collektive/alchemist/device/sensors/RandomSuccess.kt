@@ -1,6 +1,6 @@
 package it.unibo.collektive.alchemist.device.sensors
 
-interface RandomGenerator {
+interface RandomSuccess {
     fun nextRandomDouble(): Double
 
     fun nextRandomDouble(until: Double): Double

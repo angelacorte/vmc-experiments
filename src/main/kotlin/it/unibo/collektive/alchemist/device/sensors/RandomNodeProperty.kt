@@ -2,16 +2,19 @@ package it.unibo.collektive.alchemist.device.sensors
 
 import it.unibo.alchemist.model.Node
 import it.unibo.alchemist.model.NodeProperty
-import kotlin.random.Random
+import it.unibo.alchemist.util.RandomGenerators.nextDouble
+import org.apache.commons.math3.random.RandomGenerator
 
-class RandomNodeProperty<T> (override val node: Node<T>): RandomGenerator, NodeProperty<T> {
+class RandomNodeProperty<T>(
+    override val node: Node<T>,
+    private val rg: RandomGenerator,
+): RandomSuccess, NodeProperty<T> {
+    override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> = RandomNodeProperty(node, rg)
 
-    override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> = RandomNodeProperty(node)
+    override fun nextRandomDouble(): Double = rg.nextDouble()
 
-    override fun nextRandomDouble(): Double = Random.nextDouble()
-
-    override fun nextRandomDouble(until: Double): Double = Random.nextDouble(until)
+    override fun nextRandomDouble(until: Double): Double = rg.nextDouble(0.0, until)
 
     override fun  nextRandomDouble(range: ClosedFloatingPointRange<Double>): Double =
-        Random.nextDouble(range.start, range.endInclusive)
+        rg.nextDouble(range.start, range.endInclusive)
 }
