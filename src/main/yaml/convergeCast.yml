@@ -18,7 +18,7 @@ variables:
     parameters: [12.0, [12.0, 15.0, 17.5, 21.5]]
   initialResource: &initialResource
     type: ArbitraryVariable
-    parameters: [500, [100, 300, 500, 1000]]
+    parameters: [1000, [100, 300, 500, 1000]]
   resourceTh: &resourceTh
     type: ArbitraryVariable
     parameters: [200, [50, 200, 300, 500 ] ]
@@ -57,7 +57,7 @@ deployments:
     contents:
       - molecule: leaderRadius
         concentration: *leaderRadius
-      - molecule: leaderRadius
+      - molecule: initialResource
         concentration: *initialResource
       - molecule: resourceTh
         concentration: *resourceTh
@@ -68,6 +68,27 @@ deployments:
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.RandomNodeProperty
       - type: it.unibo.collektive.alchemist.device.sensors.LayerProperty
+
+export:
+  #  - type: MongoDBExporter
+  #    parameters:
+  #      uri: mongodb://localhost:27017
+  #      dbName: simulation
+  #    data:
+  #      - time
+  #      - molecule: "org:protelis:tutorial:distanceTo"
+  #        aggregators: [mean, min, max]
+  #        value-filter: onlyfinite
+  - type: CSVExporter
+    parameters:
+      fileNameRoot: convergeCast
+      interval: 1
+      exportPath: data
+    data:
+      - time
+      - molecule: "it.unibo.collektive.lib.ConvergeAndSpreadKt.convergeAndSpread"
+        aggregators: [mean, min, max]
+        value-filter: onlyfinite
 #
 #displacements:
 #  - in:
