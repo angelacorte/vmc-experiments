@@ -7,6 +7,25 @@ network-model:
   type: ConnectWithinDistance
   parameters: [2.5]
 
+variables:
+  seed: &seed
+    min: 0
+    max: 20
+    step: 1
+    default: 0
+  radius: &leaderRadius
+    type: ArbitraryVariable
+    parameters: [12.0, [12.0, 15.0, 17.5, 21.5]]
+
+seeds:
+  scenario: *seed
+  simulation: *seed
+
+layers:
+  type: SuccessSourceLayer
+  parameters: [ ]
+  molecule: successSource
+
 incarnation: collektive
 
 _pool: &program
@@ -14,7 +33,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [it.unibo.collektive.lib.ConvergeAndSpreadKt.convergeAndSpread]
+        parameters: [it.unibo.collektive.lib.ConvergeAndSpreadKt.vmc]
   - time-distribution: 1
     type: Event
     actions:
@@ -27,7 +46,24 @@ deployments:
     programs:
       - *program
     contents:
+      - molecule: radius
+        concentration: *leaderRadius
       - molecule: source
+        concentration: false
+      - molecule: sensor
+        concentration: false
+    properties:
+      - type: it.unibo.collektive.alchemist.device.sensors.RandomNodeProperty
+  - type: Point
+    parameters: [ 4, 4 ]
+    programs:
+      - *program
+    contents:
+      - molecule: source
+        concentration: false
+      - molecule: sensor
+        concentration: true
+      - molecule: cloning
         concentration: false
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.RandomNodeProperty
