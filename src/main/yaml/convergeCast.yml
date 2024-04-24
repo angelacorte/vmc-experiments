@@ -42,7 +42,7 @@ _pool: &program
     type: Event
     actions:
       - type: RunCollektiveProgram
-        parameters: [it.unibo.collektive.lib.ConvergeAndSpreadKt.vmc]
+        parameters: [it.unibo.collektive.lib.ConvergeAndSpreadKt.convergeAndSpread]
   - time-distribution: 1
     type: Event
     actions:
