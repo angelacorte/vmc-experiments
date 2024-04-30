@@ -1,4 +1,4 @@
-package it.unibo.collektive.lib
+package it.unibo.collektive.coordination
 
 import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
@@ -11,7 +11,7 @@ context(DistanceSensor, EnvironmentVariables)
 fun <ID: Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
     localStrength: C,
     radius: Double,
-): Boolean {
+): ID {
     data class Candidacy<ID: Any>(val strength: C, val distance: Double, val leaderId: ID): Comparable<Candidacy<ID>> {
         override fun compareTo(other: Candidacy<ID>): Int =
             Comparator<Candidacy<ID>> { a, b -> a.strength.compareTo(b.strength) }
@@ -30,10 +30,11 @@ fun <ID: Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
             .alignedMap(distances()) { c, m -> Candidacy(c.strength,c.distance + m, c.leaderId) }
         val field: Field<ID, Candidacy<ID>?> = candidate
             .mapWithId { id, c -> c.takeUnless { id == localId || it.distance > radius } }
+        println(localId)
         field.fold(local) { accumulator, newValue -> when {
             newValue == null -> accumulator
             else -> minOf(accumulator, newValue)
         } }
-    }.leaderId == localId
+    }.leaderId
 }
 

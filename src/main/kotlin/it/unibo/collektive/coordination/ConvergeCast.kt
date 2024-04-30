@@ -1,4 +1,4 @@
-package it.unibo.collektive.lib
+package it.unibo.collektive.coordination
 
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
