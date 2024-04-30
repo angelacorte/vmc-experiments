@@ -30,7 +30,6 @@ fun <ID: Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
             .alignedMap(distances()) { c, m -> Candidacy(c.strength,c.distance + m, c.leaderId) }
         val field: Field<ID, Candidacy<ID>?> = candidate
             .mapWithId { id, c -> c.takeUnless { id == localId || it.distance > radius } }
-        println(localId)
         field.fold(local) { accumulator, newValue -> when {
             newValue == null -> accumulator
             else -> minOf(accumulator, newValue)
