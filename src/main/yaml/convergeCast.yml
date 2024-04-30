@@ -16,10 +16,10 @@ variables:
   radius: &leaderRadius
     type: ArbitraryVariable
     parameters: [12.0, [12.0, 15.0, 17.5, 21.5]]
-  initialResource: &initialResource
+  leaderInitialResource: &leaderInitialResource
     type: ArbitraryVariable
     parameters: [500, [100, 300, 500, 1000]]
-  resourceTh: &resourceTh
+  resourceUpperBound: &resourceUpperBound
     type: ArbitraryVariable
     parameters: [200, [50, 200, 300, 500 ] ]
   cloningRatio: &cloningRatio
@@ -57,13 +57,13 @@ deployments:
     contents:
       - molecule: leaderRadius
         concentration: *leaderRadius
-      - molecule: initialResource
-        concentration: *initialResource
-      - molecule: resourceTh
-        concentration: *resourceTh
+      - molecule: leaderInitialResource
+        concentration: *leaderInitialResource
+      - molecule: resourceUpperBound
+        concentration: *resourceUpperBound
       - molecule: cloningRatio
         concentration: *cloningRatio
-      - molecule: source
+      - molecule: leader
         concentration: false
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.RandomNodeProperty
