@@ -20,7 +20,7 @@ fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(
     return spreadToChildren(potential, condition, localSuccess).also {
         set("resource", it)
         val neighbors = neighboring(coordinates())
-        spawnIfNeeded(neighbors, spawnWithRatio())
+        spawnIfNeeded(neighbors, spawnWithRatio() && spawnWithChildsNumber())
         selfDestroyIfNeeded(destroyWithRatio())
 //        if (it >= getOrDefault("resourceUpperBound", 50.0) &&
 //            get<Double>("localSuccess") >= getOrDefault("successBound", 10.0)
