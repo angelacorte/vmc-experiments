@@ -1,12 +1,17 @@
 package it.unibo.collektive.alchemist.device.sensors
 
 import it.unibo.collektive.aggregate.api.Aggregate
-import it.unibo.collektive.field.Field
 
 interface DeviceSpawn {
-    fun <ID : Any> spawnIfNeeded(neighbors: Field<ID, Pair<Double, Double>>, spawn: Boolean)
+    fun spawn(coordinate: Pair<Double, Double>): Double
 
-    fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
+    fun <ID : Comparable<ID>> Aggregate<ID>.selfDestroy()
 
-    fun spawnWithChildsNumber(): Boolean
+    fun currentTime(): Double
+
+    val cloningRange: Double
+
+//    fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
+//
+//    fun spawnWithChildsNumber(): Boolean
 }

@@ -1,30 +1,25 @@
 [versions]
 kotlin = "1.9.23"
-alchemist = "32.0.1"
-collektive = "9.2.1"
-kotest = "5.8.1"
+alchemist = "34.0.3"
+collektive = "9.2.2"
 
 [libraries]
 alchemist = { module = "it.unibo.alchemist:alchemist", version.ref = "alchemist" }
-alchemist-incarnation-protelis = { module = "it.unibo.alchemist:alchemist-incarnation-protelis", version.ref = "alchemist" }
 alchemist-swingui = { module = "it.unibo.alchemist:alchemist-swingui", version.ref = "alchemist" }
+alchemist-ui-tooling = { module = "it.unibo.alchemist:alchemist-ui-tooling", version.ref = "alchemist" }
 alchemist-euclidean-geometry = { module = "it.unibo.alchemist:alchemist-euclidean-geometry", version.ref = "alchemist" }
 collektive = { module = "it.unibo.collektive:dsl", version.ref = "collektive" }
 collektive-incarnation = { module = "it.unibo.collektive:alchemist-incarnation-collektive", version.ref = "collektive" }
 collektive-plugin = { module = "it.unibo.collektive:compiler-plugin", version.ref = "collektive" }
-kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
-kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
-kotest-runner-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 
 [bundles]
-alchemist = ["alchemist", "alchemist-euclidean-geometry", "alchemist-incarnation-protelis", "alchemist-swingui"]
-collektive = ["collektive", "collektive-incarnation", "collektive-plugin"]
-kotlin-testing-common = [
-    "kotest-assertions-core",
-    "kotest-framework-engine",
-    "kotest-framework-datatest",
+alchemist = [
+    "alchemist",
+    "alchemist-euclidean-geometry",
+    "alchemist-swingui",
+    "alchemist-ui-tooling"
 ]
+collektive = ["collektive", "collektive-incarnation", "collektive-plugin"]
 
 [plugins]
 collektive = { id = "it.unibo.collektive.collektive-plugin", version.ref = "collektive" }

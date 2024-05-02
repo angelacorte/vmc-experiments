@@ -7,5 +7,5 @@ interface LeaderSensor {
 
     fun setLeader(leader: Boolean)
 
-    fun <ID: Any> setLeaderId(id: ID)
+    fun <ID : Any> setLeaderId(id: ID)
 }

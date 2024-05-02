@@ -1,0 +1,88 @@
+network-model:
+  type: ConnectWithinDistance
+  parameters: [3.50]
+
+variables:
+  seed: &seed
+    min: 0
+    max: 20
+    step: 1
+    default: 0
+  radius: &leaderRadius
+    100.0
+  leaderInitialResource: &leaderInitialResource
+    type: ArbitraryVariable
+    parameters: [1000, [100, 300, 500, 1000]]
+  layerX: &layerX
+    10
+  width: &width
+    20
+  height: &height
+    20
+  maxY: &maxY
+    20
+  minY: &minY
+    0
+  maxSuccess: &maxSuccess
+    formula: leaderInitialResource
+  gaussianShape: &gaussianShape
+    type: ArbitraryVariable
+    parameters: [5, [1, 5, 10]]
+  initialNodes: &initialNodes
+    type: ArbitraryVariable
+    parameters: [100, [1, 10, 30, 50]]
+  resourceRadius: &evaluationRadius
+    type: ArbitraryVariable
+    parameters: [6.0, [ 12.0, 15.0, 17.5, 21.5 ] ]
+  killingRange: &killingRange
+    5.0
+
+seeds:
+  scenario: *seed
+  simulation: *seed
+
+layers:
+  - type: BidimensionalGaussianLayer
+    parameters: [*layerX, *minY, *maxSuccess, *gaussianShape]
+    molecule: successSource
+  - type: BidimensionalGaussianLayer
+    parameters: [*layerX, *maxY, *leaderInitialResource, *gaussianShape]
+    molecule: localResource
+
+incarnation: collektive
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [ it.unibo.collektive.vmc.VMCWithoutSpawningKt.withoutSpawning]
+  - time-distribution:
+      type: Trigger
+      parameters: [ 500 ]
+    type: Event
+    actions:
+      - type: RemoveNodes
+        parameters: [ *killingRange, 0, *width, *height ]
+
+
+deployments:
+  - type: Rectangle
+    parameters: [*initialNodes, 0, 0, *width, *height]
+    programs:
+      - *program
+#    contents:
+#      - molecule: leader
+#        concentration: false
+
+    properties:
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
+        parameters: [ *maxSuccess ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
+        parameters: [ *leaderRadius ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+        parameters: [ *evaluationRadius ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
+        parameters: [ *leaderInitialResource ]

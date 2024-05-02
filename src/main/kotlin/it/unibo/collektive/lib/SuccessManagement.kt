@@ -12,6 +12,6 @@ context(SuccessSensor)
 fun obtainLocalSuccess(): Double =
     getLocalSuccess().also { setLocalSuccess(it) }
 
-//context(SuccessSensor)
-//fun applyNegativeForce(localSuccess: Double): Double =
+// context(SuccessSensor)
+// fun applyNegativeForce(localSuccess: Double): Double =
 //     localSuccess - (localSuccess * negativeForce)

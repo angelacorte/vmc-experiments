@@ -2,6 +2,7 @@ package it.unibo.collektive.coordination
 
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
+import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 import it.unibo.collektive.field.Field.Companion.hood
@@ -16,7 +17,7 @@ data class Channel<T>(val isFromChild: Boolean, val localValue: T)
  * Accumulate the [potential] according to the [reduce] function.
  * [local] is the value field providing the value to be collected for each device.
  */
-fun <T, ID: Comparable<ID>> Aggregate<ID>.convergeCast(
+fun <T, ID : Comparable<ID>> Aggregate<ID>.convergeCast(
     potential: Double,
     local: T,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
@@ -32,14 +33,14 @@ fun <T, ID: Comparable<ID>> Aggregate<ID>.convergeCast(
     }
 }
 
-
-fun <ID: Comparable<ID>> Aggregate<ID>.spreadToChildren(
+context(EnvironmentVariables)
+fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
     potential: Double,
     localResource: Double,
     localSuccess: Double,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
 ): Double = exchanging(localResource) { resource ->
-    val parent = findParent(potential, disambiguateParent) //the parent of this device
+    val parent = findParent(potential, disambiguateParent) // the parent of this device
     val myLocalResources = resource.mapWithId { id, neighborResource ->
         if (id == parent) neighborResource else 0.0
     }.fold(localResource) { a, b -> a + b }
@@ -51,15 +52,17 @@ fun <ID: Comparable<ID>> Aggregate<ID>.spreadToChildren(
                 else -> 0.0
             }
         }
-    val overallChildrenSuccess = childrenSuccess.hood(Double.POSITIVE_INFINITY) { a, b -> a + b }
-//    val myInitialSuccess = localSuccess - overallChildrenSuccess
-    childrenSuccess.map { if (overallChildrenSuccess <= 0) 0.0 else it * myLocalResources / overallChildrenSuccess }
+    val selfConsumption = myLocalResources / childrenSuccess.fold(1) { a, b -> a + (1.takeIf { b > 0 } ?: 0) }
+    if (potential > 0.0) set("resource", selfConsumption)
+    val resourcesToSpread = myLocalResources - selfConsumption
+    val overallChildrenSuccess = childrenSuccess.hood(Double.NEGATIVE_INFINITY) { a, b -> a + b }
+    childrenSuccess.map { if (overallChildrenSuccess <= 0) 0.0 else it * resourcesToSpread / overallChildrenSuccess }
         .yielding {
             neighboring(myLocalResources)
         }
 }.localValue
 
-fun <ID: Comparable<ID>> Aggregate<ID>.findParent(
+fun <ID : Comparable<ID>> Aggregate<ID>.findParent(
     potential: Double,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
 ): ID {
@@ -68,5 +71,5 @@ fun <ID: Comparable<ID>> Aggregate<ID>.findParent(
     return neighboringPotential.asSequence()
         .filter { (_, v) -> v == localMinimum }
         .map { it.first }
-        .reduce(disambiguateParent) //the parent
+        .reduce(disambiguateParent) // the parent
 }

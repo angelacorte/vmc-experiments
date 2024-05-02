@@ -7,21 +7,26 @@ import it.unibo.alchemist.model.Position
 import it.unibo.alchemist.model.molecules.SimpleMolecule
 import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
 
-class ResourceSensorProperty<T, P: Position<P>>(
-    override val leaderInitialResource: Double,
+class ResourceSensorProperty<T, P : Position<P>>(
     private val environment: Environment<T, P>,
     override val node: Node<T>,
-): ResourceSensor, NodeProperty<T> {
+) : ResourceSensor, NodeProperty<T> {
+
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
-        ResourceSensorProperty(leaderInitialResource, environment, node)
+        ResourceSensorProperty(environment, node)
 
     override fun getResource(): Double =
-        node.getConcentration(SimpleMolecule("resource")) as Double
+        when (val layerValue = environment.getLayer(localResource).get().getValue(environment.getPosition(node))) {
+            is Number -> layerValue.toDouble()
+            else -> error("ResourceSensorProperty: $layerValue is not a number")
+        }
 
     @Suppress("UNCHECKED_CAST")
-    override fun updateResource(resource: Double) =
-        node.setConcentration(SimpleMolecule("resource"), resource as T)
+    override fun setCurrentOverallResource(resource: Double) =
+        node.setConcentration(resourceMolecule, resource as T)
 
-    override fun setInitialResource(source: Boolean) =
-        if (source) updateResource(leaderInitialResource) else updateResource(0.0)
+    companion object {
+        private val resourceMolecule = SimpleMolecule("resource")
+        private val localResource = SimpleMolecule("localResource")
+    }
 }
