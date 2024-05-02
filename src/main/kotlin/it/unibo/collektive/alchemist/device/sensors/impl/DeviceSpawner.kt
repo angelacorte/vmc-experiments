@@ -45,7 +45,7 @@ class DeviceSpawner<T, P: Position<P>>(
         repeat(1) {a -> a + 1} % ratio == 0.0
 
     @Suppress("UNCHECKED_CAST")
-    override fun <ID : Any> Aggregate<ID>.spawnWithChildsNumber(): Boolean {
+    override fun spawnWithChildsNumber(): Boolean {
         val childsMolecule = SimpleMolecule("childs")
         if(node.contains(childsMolecule)) {
             node.setConcentration(childsMolecule, (node.getConcentration(childsMolecule) as Double + 1.0) as T)

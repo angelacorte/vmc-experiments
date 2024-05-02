@@ -62,7 +62,7 @@ _pool: &program
 
 deployments:
   - type: Rectangle
-    parameters: [ *initialNodes, 0, 0, 20, 20 ]
+    parameters: [*initialNodes, 0, 0, 20, 20]
     programs:
       - *program
     contents:

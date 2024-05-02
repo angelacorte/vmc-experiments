@@ -8,5 +8,5 @@ interface DeviceSpawn {
 
     fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
 
-    fun <ID : Any> Aggregate<ID>.spawnWithChildsNumber(): Boolean
+    fun spawnWithChildsNumber(): Boolean
 }
