@@ -17,8 +17,5 @@ fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(
     setInitialResource(isLeader())
     return spreadToChildren(potential, getResource(), localSuccess).also {
         updateResource(it)
-        val neighbors = neighboring(coordinates())
-        spawnIfNeeded(neighbors, spawnWithRatio() && spawnWithChildsNumber())
-        selfDestroyIfNeeded(destroyWithRatio())
     }
 }

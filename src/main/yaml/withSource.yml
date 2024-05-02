@@ -1,6 +1,6 @@
 network-model:
   type: ConnectWithinDistance
-  parameters: [2.5]
+  parameters: [1.5]
 
 variables:
   seed: &seed
@@ -40,7 +40,7 @@ variables:
     parameters: [40, [10, 40, 100, 150]]
   initialNodes: &initialNodes
     type: ArbitraryVariable
-    parameters: [10, [1, 10, 30, 50]]
+    parameters: [1, [1, 10, 30, 50]]
 
 seeds:
   scenario: *seed
