@@ -21,16 +21,22 @@ variables:
     parameters: [500, [100, 300, 500, 1000]]
   resourceUpperBound: &resourceUpperBound
     type: ArbitraryVariable
-    parameters: [200, [50, 200, 300, 500 ]]
+    parameters: [10, [50, 200, 300, 500 ]]
   resourceLowerBound: &resourceLowerBound
     type: ArbitraryVariable
     parameters: [10, [10, 20, 50, 100]]
-  cloningRatio: &cloningRatio
+  successBound: &successBound
+    type: ArbitraryVariable
+    parameters: [19.0, [0.1, 2.5, 8.0, 13.5]]
+  spawningRatio: &spawningRatio
     type: ArbitraryVariable
     parameters: [500, [100, 300, 500, 1000]]
   deletingRatio: &deletingRatio
     type: ArbitraryVariable
     parameters: [200, [50, 100, 200, 500]]
+  maxChilds: &maxChilds
+    type: ArbitraryVariable
+    parameters: [5, [2, 5, 10, 20]]
   layerXY: &layerXY
     type: ArbitraryVariable
     parameters: [10.0, [ 4.0, 10.0, 17,0 ] ]
@@ -52,11 +58,6 @@ _pool: &program
     actions:
       - type: RunCollektiveProgram
         parameters: [it.unibo.collektive.vmc.VMCSourceKt.vmcSource]
-  - time-distribution: 1
-    type: Event
-    actions:
-      - type: CloningAction
-        parameters: [it.unibo.alchemist.actions.CloningAction]
 
 deployments:
   - type: Rectangle
@@ -72,15 +73,18 @@ deployments:
         concentration: *resourceUpperBound
       - molecule: resourceLowerBound
         concentration: *resourceLowerBound
-      - molecule: cloningRatio
-        concentration: *cloningRatio
-      - molecule: deletingRatio
-        concentration: *deletingRatio
+      - molecule: successBound
+        concentration: *successBound
       - molecule: leader
         concentration: false
     properties:
-      - type: it.unibo.collektive.alchemist.device.sensors.RandomNodeProperty
-      - type: it.unibo.collektive.alchemist.device.sensors.LayerProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SelfDestroyer
+        parameters: [ *deletingRatio, *resourceLowerBound ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
+        parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds ]
 
 export:
   #  - type: MongoDBExporter
