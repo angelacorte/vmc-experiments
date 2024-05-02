@@ -1,8 +1,3 @@
-# result:
-#  {0 13, 1 $,  2 $, 3  $,
-#   4 $, 5 $,  6 $,  7  $,
-#   8 $, 9 $, 10 $, 11 13}
-
 network-model:
   type: ConnectWithinDistance
   parameters: [2.5]
@@ -25,9 +20,6 @@ variables:
   resourceLowerBound: &resourceLowerBound
     type: ArbitraryVariable
     parameters: [10, [10, 20, 50, 100]]
-  successBound: &successBound
-    type: ArbitraryVariable
-    parameters: [19.0, [0.1, 2.5, 8.0, 13.5]]
   spawningRatio: &spawningRatio
     type: ArbitraryVariable
     parameters: [500, [100, 300, 500, 1000]]
@@ -40,6 +32,12 @@ variables:
   layerXY: &layerXY
     type: ArbitraryVariable
     parameters: [10.0, [ 4.0, 10.0, 17,0 ] ]
+  negativeForce: &negativeForce
+    type: ArbitraryVariable
+    parameters: [ 0.2, [ 0.1, 0.5, 0.9 ] ]
+  maxSuccess: &maxSuccess
+    type: ArbitraryVariable
+    parameters: [ 40, [ 10, 40, 100, 150 ] ]
 
 seeds:
   scenario: *seed
@@ -47,7 +45,7 @@ seeds:
 
 layers:
   - type: BidimensionalGaussianLayer
-    parameters: [*layerXY, *layerXY, 40.0, 10.0]
+    parameters: [*layerXY, *layerXY, *maxSuccess, 10.0]
     molecule: successSource
 
 incarnation: collektive
@@ -65,26 +63,23 @@ deployments:
     programs:
       - *program
     contents:
-      - molecule: leaderRadius
-        concentration: *leaderRadius
-      - molecule: leaderInitialResource
-        concentration: *leaderInitialResource
-      - molecule: resourceUpperBound
-        concentration: *resourceUpperBound
-      - molecule: resourceLowerBound
-        concentration: *resourceLowerBound
-      - molecule: successBound
-        concentration: *successBound
       - molecule: leader
         concentration: false
+
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
+        parameters: [ *leaderRadius ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
+        parameters: [ *leaderInitialResource ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.SelfDestroyer
         parameters: [ *deletingRatio, *resourceLowerBound ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
         parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
+        parameters: [ *negativeForce, *maxSuccess ]
 
 export:
   #  - type: MongoDBExporter
