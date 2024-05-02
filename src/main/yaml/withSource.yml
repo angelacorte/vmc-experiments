@@ -38,6 +38,9 @@ variables:
   maxSuccess: &maxSuccess
     type: ArbitraryVariable
     parameters: [ 40, [ 10, 40, 100, 150 ] ]
+  initialNodes: &initialNodes
+    type: ArbitraryVariable
+    parameters: [ 10, [ 1, 10, 30, 50 ] ]
 
 seeds:
   scenario: *seed
@@ -59,7 +62,7 @@ _pool: &program
 
 deployments:
   - type: Rectangle
-    parameters: [ 10, 0, 0, 20, 20 ]
+    parameters: [ *initialNodes, 0, 0, 20, 20 ]
     programs:
       - *program
     contents:
@@ -67,19 +70,19 @@ deployments:
         concentration: false
 
     properties:
-      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
-      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
         parameters: [ *leaderRadius ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
         parameters: [ *leaderInitialResource ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
+        parameters: [ *negativeForce, *maxSuccess ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.SelfDestroyer
         parameters: [ *deletingRatio, *resourceLowerBound ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
         parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds ]
-      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
-        parameters: [ *negativeForce, *maxSuccess ]
 
 export:
   #  - type: MongoDBExporter
