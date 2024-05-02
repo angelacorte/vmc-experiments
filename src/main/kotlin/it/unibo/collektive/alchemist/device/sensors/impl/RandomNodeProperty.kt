@@ -1,8 +1,9 @@
-package it.unibo.collektive.alchemist.device.sensors
+package it.unibo.collektive.alchemist.device.sensors.impl
 
 import it.unibo.alchemist.model.Node
 import it.unibo.alchemist.model.NodeProperty
 import it.unibo.alchemist.util.RandomGenerators.nextDouble
+import it.unibo.collektive.alchemist.device.sensors.RandomSuccess
 import org.apache.commons.math3.random.RandomGenerator
 
 class RandomNodeProperty<T>(

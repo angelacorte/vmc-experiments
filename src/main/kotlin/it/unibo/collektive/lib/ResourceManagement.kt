@@ -2,12 +2,13 @@ package it.unibo.collektive.lib
 
 import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
-import it.unibo.collektive.alchemist.device.sensors.EnvironmentLayer
+import it.unibo.collektive.alchemist.device.sensors.DeviceSpawner
 import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
+import it.unibo.collektive.alchemist.device.sensors.SelfDestroy
 import it.unibo.collektive.coordination.boundedElection
-import it.unibo.collektive.coordination.convergeCast
 import it.unibo.collektive.coordination.distanceTo
 import it.unibo.collektive.coordination.spreadToChildren
+import it.unibo.collektive.field.Field
 
 context(DistanceSensor, EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.chooseLeader(): Boolean =
@@ -22,33 +23,32 @@ fun <ID : Comparable<ID>> Aggregate<ID>.findPotential(leader: Boolean): Double {
     return set ("potential", potential)
 }
 
-context(DistanceSensor, EnvironmentVariables, EnvironmentLayer)
-fun <ID : Comparable<ID>> Aggregate<ID>.obtainLocalSuccess(): Double {
-    val localSuccess = getFromLayer<Double>("successSource")
-    return set("localSuccess", localSuccess)
-}
-
-context(DistanceSensor, EnvironmentVariables)
-fun <ID : Comparable<ID>> Aggregate<ID>.convergeSuccess(potential: Double, localSuccess: Double): Double {
-    val success = convergeCast(potential, localSuccess) { a, b -> a + b }
-    return set("success", success)
-}
-
-context(DistanceSensor, EnvironmentVariables)
-fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(potential: Double, localSuccess: Double): Double {
+context(DistanceSensor, EnvironmentVariables, DeviceSpawner, SelfDestroy)
+fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(
+    potential: Double,
+    localSuccess: Double,
+): Double {
     val condition = if (getOrDefault("leader", false)) {
         getOrDefault("leaderInitialResource", 500.0)
     } else 0.0
     return spreadToChildren(potential, condition, localSuccess).also {
-        set("resource", it)
-        if (it >= getOrDefault("resourceUpperBound", 200.0)) {
-            cloneNode()
-        }
-        if (it <= getOrDefault("resourceLowerBound", 10.0)) {
-            deleteNode()
-        }
+        spawnIfNeeded()
+        selfDestroyIfNeeded()
+//        set("resource", it)
+//        val neighbors = neighboring(coordinates())
+//        if (it >= getOrDefault("resourceUpperBound", 50.0) &&
+//            get<Double>("localSuccess") >= getOrDefault("successBound", 10.0)
+//        ){
+//            cloneNode(neighbors)
+//        }
+//        if (it <= getOrDefault("resourceLowerBound", 2.0)) {
+//            deleteNode()
+//        }
+
     }
 }
+
+private fun <ID : Comparable<ID>> Aggregate<ID>.neighbors(): Field<ID, ID> = neighboring(localId)
 
 context(DistanceSensor, EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.applyNegativeForce(localSuccess: Double): Double {
@@ -56,10 +56,12 @@ fun <ID : Comparable<ID>> Aggregate<ID>.applyNegativeForce(localSuccess: Double)
     return localSuccess - (localSuccess * negativeForce)
 }
 
-context(EnvironmentVariables)
-fun <ID : Comparable<ID>> Aggregate<ID>.cloneNode() {
+context(EnvironmentVariables, DeviceSpawner)
+fun <ID : Comparable<ID>> Aggregate<ID>.cloneNode(neighbors: Field<ID, Pair<Double, Double>>) {
     val cloned = repeat(1) { a -> a + 1 }
-    if (cloned % getOrDefault("cloningRatio", 500.0) == 0.0) set("cloning", true)
+    if (cloned % getOrDefault("cloningRatio", 500.0) == 0.0) { // && cloned in 500 .. 1500
+        set("cloning", neighbors)
+    }
 }
 
 context(EnvironmentVariables)

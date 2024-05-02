@@ -1,4 +1,4 @@
-package it.unibo.collektive.lib
+package it.unibo.collektive.lib.metrics
 
 import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
