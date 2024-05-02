@@ -7,7 +7,7 @@ import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 
-context(DistanceSensor, EnvironmentVariables)
+context(DistanceSensor)
 fun <ID: Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
     localStrength: C,
     radius: Double,
