@@ -8,6 +8,4 @@ interface SuccessSensor {
     fun getSuccess(): Double
 
     fun getLocalSuccess(): Double
-
-    val negativeForce: Double
 }

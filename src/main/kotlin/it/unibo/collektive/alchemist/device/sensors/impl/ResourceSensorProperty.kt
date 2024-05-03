@@ -12,15 +12,17 @@ class ResourceSensorProperty<T, P: Position<P>>(
     private val environment: Environment<T, P>,
     override val node: Node<T>,
 ): ResourceSensor, NodeProperty<T> {
+    private val resourceMolecule = SimpleMolecule("resource")
+
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
         ResourceSensorProperty(leaderInitialResource, environment, node)
 
     override fun getResource(): Double =
-        node.getConcentration(SimpleMolecule("resource")) as Double
+        node.getConcentration(resourceMolecule) as Double
 
     @Suppress("UNCHECKED_CAST")
     override fun updateResource(resource: Double) =
-        node.setConcentration(SimpleMolecule("resource"), resource as T)
+        node.setConcentration(resourceMolecule, resource as T)
 
     override fun setInitialResource(source: Boolean) =
         if (source) updateResource(leaderInitialResource) else updateResource(0.0)

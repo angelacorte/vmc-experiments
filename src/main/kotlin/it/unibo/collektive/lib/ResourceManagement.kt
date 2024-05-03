@@ -1,20 +1,16 @@
 package it.unibo.collektive.lib
 
-import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
-import it.unibo.collektive.alchemist.device.sensors.DeviceSpawn
-import it.unibo.collektive.alchemist.device.sensors.LeaderSensor
-import it.unibo.collektive.alchemist.device.sensors.LocationSensor
 import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
-import it.unibo.collektive.alchemist.device.sensors.SelfDestroy
 import it.unibo.collektive.coordination.spreadToChildren
 
-context(DistanceSensor, DeviceSpawn, SelfDestroy, LocationSensor, ResourceSensor, LeaderSensor)
+context(ResourceSensor)
 fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(
     potential: Double,
     localSuccess: Double,
+    isLeader: Boolean,
 ): Double {
-    setInitialResource(isLeader())
+    setInitialResource(isLeader)
     return spreadToChildren(potential, getResource(), localSuccess).also {
         updateResource(it)
     }
