@@ -34,4 +34,6 @@ class DeviceSpawner<T, P : Position<P>>(
         }
         environment.simulation.schedule { environment.removeNode(node) }
     }
+
+    override fun currentTime(): Double = environment.simulation.time.toDouble()
 }

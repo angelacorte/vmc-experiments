@@ -46,21 +46,26 @@ fun Aggregate<Int>.predappio(
     resourceLowerBound: Double = 20.0,
     certainSpawnThreshold: Double = 100.0,
     maxChildren: Int = 1,
+    minSpawnWait: Double = 100.0,
 ): Double = with(MyHopMetric()) {
     vmc { potential: Double, _: Double, _: Double, localResource: Double ->
-        val children = neighboring(findParent(potential))
-            .hood(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
+        val nearbyParents = neighboring(findParent(potential))
+        println(nearbyParents)
+        val children = nearbyParents.fold(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
         val neighbors = neighboring(coordinates())
         val localPosition = neighbors.localValue
-        repeat(NEGATIVE_INFINITY) { time ->
+        repeat(currentTime()) { time ->
+            val enoughTime = currentTime() > time + minSpawnWait
             when {
+                !enoughTime -> time
                 nextRandomDouble(0.0..certainSpawnThreshold) < localResource && children < maxChildren -> {
                     val relativeDestination = neighbors.map { it - localPosition }
                         .fold((0.5 - nextRandomDouble()) * 1.3 to (0.5 - nextRandomDouble()) * 1.3) { acc, pair -> acc + pair }
                     val absoluteDestination = localPosition - relativeDestination
+                    println(nearbyParents)
                     spawn(absoluteDestination)
                 }
-                nextRandomDouble(0.1..resourceLowerBound) > localResource && time > NEGATIVE_INFINITY -> {
+                nextRandomDouble(0.0..resourceLowerBound) > localResource -> {
                     selfDestroy()
                     POSITIVE_INFINITY
                 }

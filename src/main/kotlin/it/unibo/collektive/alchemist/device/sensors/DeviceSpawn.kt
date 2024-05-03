@@ -7,7 +7,7 @@ interface DeviceSpawn {
 
     fun <ID : Comparable<ID>> Aggregate<ID>.selfDestroy()
 
-//    fun simulationTime(): Double
+    fun currentTime(): Double
 
 //    fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
 //
