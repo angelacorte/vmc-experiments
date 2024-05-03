@@ -7,11 +7,11 @@ import it.unibo.alchemist.model.Position
 import it.unibo.alchemist.model.molecules.SimpleMolecule
 import it.unibo.collektive.alchemist.device.sensors.LeaderSensor
 
-class LeaderSensorProperty<T, P: Position<P>>(
+class LeaderSensorProperty<T, P : Position<P>>(
     override val leaderRadius: Double,
     private val environment: Environment<T, P>,
     override val node: Node<T>,
-): LeaderSensor, NodeProperty<T> {
+) : LeaderSensor, NodeProperty<T> {
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
         LeaderSensorProperty(leaderRadius, environment, node)
 

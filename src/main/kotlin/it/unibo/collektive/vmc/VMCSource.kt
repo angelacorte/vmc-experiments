@@ -46,7 +46,7 @@ fun Aggregate<Int>.predappio(
     resourceLowerBound: Double = 20.0,
     certainSpawnThreshold: Double = 100.0,
     maxChildren: Int = 1,
-): Double = with (MyHopMetric()) {
+): Double = with(MyHopMetric()) {
     vmc { potential: Double, _: Double, _: Double, localResource: Double ->
         val children = neighboring(findParent(potential))
             .hood(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
@@ -64,7 +64,7 @@ fun Aggregate<Int>.predappio(
                     selfDestroy()
                     POSITIVE_INFINITY
                 }
-                else -> time //in this way it returns negative infinite if the device never spawn a child
+                else -> time // in this way it returns negative infinite if the device never spawn a child
             }
         }
     }

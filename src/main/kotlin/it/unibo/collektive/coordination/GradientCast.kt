@@ -9,7 +9,7 @@ import it.unibo.collektive.field.plus
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
 context(DistanceSensor)
-fun <ID: Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Double =
+fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Double =
     share(initial) { field ->
         val dist = distances()
         when (source) {
@@ -26,15 +26,15 @@ fun <ID: Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Doub
     }
 
 context(DistanceSensor)
-fun <ID: Any> Aggregate<ID>.distanceTo(source: Boolean): Double =
+fun <ID : Any> Aggregate<ID>.distanceTo(source: Boolean): Double =
     gradientCast(source, if (source) 0.0 else POSITIVE_INFINITY)
 
 context(DistanceSensor)
-fun <ID: Any> Aggregate<ID>.distanceBetween(source: Boolean, destination: Boolean): Double =
+fun <ID : Any> Aggregate<ID>.distanceBetween(source: Boolean, destination: Boolean): Double =
     broadcast(source, distanceTo(destination)) { it }
 
 context(DistanceSensor)
-fun <ID: Any> Aggregate<ID>.broadcast(source: Boolean, value: Double, accumulator: (Double) -> Double): Double =
+fun <ID : Any> Aggregate<ID>.broadcast(source: Boolean, value: Double, accumulator: (Double) -> Double): Double =
     share(POSITIVE_INFINITY to value) { field ->
         val dist = distances()
         when {

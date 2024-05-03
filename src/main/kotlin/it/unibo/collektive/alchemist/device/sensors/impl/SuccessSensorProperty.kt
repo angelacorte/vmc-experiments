@@ -7,19 +7,16 @@ import it.unibo.alchemist.model.Node
 import it.unibo.alchemist.model.NodeProperty
 import it.unibo.alchemist.model.Position
 import it.unibo.alchemist.model.molecules.SimpleMolecule
-import it.unibo.alchemist.util.RandomGenerators.nextDouble
 import it.unibo.collektive.alchemist.device.sensors.SuccessSensor
 import org.apache.commons.math3.random.RandomGenerator
-import kotlin.jvm.optionals.getOrDefault
-import kotlin.jvm.optionals.getOrElse
 import kotlin.jvm.optionals.getOrNull
 
-class SuccessSensorProperty<T, P: Position<P>>(
+class SuccessSensorProperty<T, P : Position<P>>(
     private val maxSuccess: Double,
     override val node: Node<T>,
     private val environment: Environment<T, P>,
     private val random: RandomGenerator,
-): SuccessSensor, NodeProperty<T> {
+) : SuccessSensor, NodeProperty<T> {
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
         SuccessSensorProperty(maxSuccess, node, environment, random)
 
@@ -35,7 +32,7 @@ class SuccessSensorProperty<T, P: Position<P>>(
         node.getConcentration(SimpleMolecule("success")) as Double
 
     override fun getLocalSuccess(): Double =
-        getFromLayer("successSource") //?: random.nextDouble(0.0, maxSuccess)
+        getFromLayer("successSource") // ?: random.nextDouble(0.0, maxSuccess)
 
     private fun <T> getFromLayer(name: String): T =
         environment.getLayer(SimpleMolecule(name)).getOrNull()?.getValue(environment.getPosition(node)) as T

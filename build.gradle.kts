@@ -1,7 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.awt.GraphicsEnvironment
 import java.io.ByteArrayOutputStream
 import java.util.*
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
@@ -21,7 +21,7 @@ repositories {
  */
 sourceSets {
     main {
-        dependencies{
+        dependencies {
             implementation(libs.bundles.alchemist)
             implementation(libs.bundles.collektive)
             implementation(kotlin("reflect"))
@@ -31,7 +31,7 @@ sourceSets {
         }
     }
     test {
-        dependencies{
+        dependencies {
             implementation(libs.bundles.kotlin.testing.common)
         }
     }

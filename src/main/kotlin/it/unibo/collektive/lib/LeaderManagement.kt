@@ -16,4 +16,4 @@ fun <ID : Comparable<ID>> Aggregate<ID>.chooseLeader(): Boolean =
 
 context(DistanceSensor, EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.findPotential(leader: Boolean): Double =
-    distanceTo(leader).also { set("potential", it)}
+    distanceTo(leader).also { set("potential", it) }

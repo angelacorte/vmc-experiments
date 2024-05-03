@@ -16,7 +16,7 @@ data class Channel<T>(val isFromChild: Boolean, val localValue: T)
  * Accumulate the [potential] according to the [reduce] function.
  * [local] is the value field providing the value to be collected for each device.
  */
-fun <T, ID: Comparable<ID>> Aggregate<ID>.convergeCast(
+fun <T, ID : Comparable<ID>> Aggregate<ID>.convergeCast(
     potential: Double,
     local: T,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
@@ -32,14 +32,13 @@ fun <T, ID: Comparable<ID>> Aggregate<ID>.convergeCast(
     }
 }
 
-
-fun <ID: Comparable<ID>> Aggregate<ID>.spreadToChildren(
+fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
     potential: Double,
     localResource: Double,
     localSuccess: Double,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
 ): Double = exchanging(localResource) { resource ->
-    val parent = findParent(potential, disambiguateParent) //the parent of this device
+    val parent = findParent(potential, disambiguateParent) // the parent of this device
     val myLocalResources = resource.mapWithId { id, neighborResource ->
         if (id == parent) neighborResource else 0.0
     }.fold(localResource) { a, b -> a + b }
@@ -59,7 +58,7 @@ fun <ID: Comparable<ID>> Aggregate<ID>.spreadToChildren(
         }
 }.localValue
 
-fun <ID: Comparable<ID>> Aggregate<ID>.findParent(
+fun <ID : Comparable<ID>> Aggregate<ID>.findParent(
     potential: Double,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
 ): ID {
@@ -68,5 +67,5 @@ fun <ID: Comparable<ID>> Aggregate<ID>.findParent(
     return neighboringPotential.asSequence()
         .filter { (_, v) -> v == localMinimum }
         .map { it.first }
-        .reduce(disambiguateParent) //the parent
+        .reduce(disambiguateParent) // the parent
 }
