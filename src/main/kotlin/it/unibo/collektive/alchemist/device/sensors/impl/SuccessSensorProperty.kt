@@ -36,4 +36,6 @@ class SuccessSensorProperty<T, P: Position<P>>(
 
     private fun <T> getFromLayer(name: String): T =
         environment.getLayer(SimpleMolecule(name)).getOrNull()?.getValue(environment.getPosition(node)) as T
+
+    override fun toString(): String = this::class.simpleName!!
 }

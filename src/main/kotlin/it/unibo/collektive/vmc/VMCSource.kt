@@ -59,11 +59,12 @@ fun Aggregate<Int>.predappio(
             first - other.first to second - other.second
         operator fun Pair<Double, Double>.plus(other: Pair<Double, Double>): Pair<Double, Double> =
             first + other.first to second + other.second
+        val localPosition = neighbors.localValue
         when {
             nextRandomDouble(0.0..certainSpawnThreshold) < localResource && children < maxChildren -> {
-                val relativeDestination = neighbors.map { it - neighbors.localValue }
+                val relativeDestination = neighbors.map { it - localPosition }
                     .hood(1.0 to 1.0) { acc, pair -> acc + pair }
-                val absoluteDestination = relativeDestination + neighbors.localValue
+                val absoluteDestination = localPosition - relativeDestination
                 spawn(absoluteDestination)
             }
             nextRandomDouble(0.0..resourceLowerBound) > localResource -> destroy()
