@@ -11,14 +11,12 @@ import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
 import it.unibo.collektive.alchemist.device.sensors.SuccessSensor
 import it.unibo.collektive.coordination.findParent
 import it.unibo.collektive.field.Field.Companion.fold
-import it.unibo.collektive.field.Field.Companion.hood
-import it.unibo.collektive.lib.chooseLeader
 import it.unibo.collektive.lib.convergeSuccess
 import it.unibo.collektive.lib.findPotential
+import it.unibo.collektive.lib.isLeader
 import it.unibo.collektive.lib.metrics.MyHopMetric
 import it.unibo.collektive.lib.obtainLocalSuccess
 import it.unibo.collektive.lib.spreadResource
-import kotlin.Double.Companion.NEGATIVE_INFINITY
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
 context(
@@ -49,9 +47,8 @@ fun Aggregate<Int>.predappio(
     minSpawnWait: Double = 100.0,
 ): Double = with(MyHopMetric()) {
     vmc { potential: Double, _: Double, _: Double, localResource: Double ->
-        val nearbyParents = neighboring(findParent(potential))
-        println(nearbyParents)
-        val children = nearbyParents.fold(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
+        val children = neighboring(findParent(potential))
+            .fold(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
         val neighbors = neighboring(coordinates())
         val localPosition = neighbors.localValue
         repeat(currentTime()) { time ->
@@ -60,16 +57,15 @@ fun Aggregate<Int>.predappio(
                 !enoughTime -> time
                 nextRandomDouble(0.0..certainSpawnThreshold) < localResource && children < maxChildren -> {
                     val relativeDestination = neighbors.map { it - localPosition }
-                        .fold((0.5 - nextRandomDouble()) * 1.3 to (0.5 - nextRandomDouble()) * 1.3) { acc, pair -> acc + pair }
+                        .fold((0.5 - nextRandomDouble()) * 1.2 to (0.5 - nextRandomDouble()) * 1.2) { acc, pair -> acc + pair }
                     val absoluteDestination = localPosition - relativeDestination
-                    println(nearbyParents)
                     spawn(absoluteDestination)
                 }
                 nextRandomDouble(0.0..resourceLowerBound) > localResource -> {
                     selfDestroy()
                     POSITIVE_INFINITY
                 }
-                else -> time // in this way it returns negative infinite if the device never spawn a child
+                else -> time
             }
         }
     }
@@ -85,7 +81,7 @@ context(
     SuccessSensor
 )
 fun Aggregate<Int>.vmc(spawner: Spawner): Double {
-    val isLeader = chooseLeader()
+    val isLeader = isLeader()
     val potential = findPotential(isLeader)
     val localSuccess = obtainLocalSuccess()
     val success = convergeSuccess(potential, localSuccess)

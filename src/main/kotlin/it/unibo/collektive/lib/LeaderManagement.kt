@@ -8,12 +8,13 @@ import it.unibo.collektive.coordination.boundedElection
 import it.unibo.collektive.coordination.distanceTo
 
 context(DistanceSensor, LeaderSensor)
-fun <ID : Comparable<ID>> Aggregate<ID>.chooseLeader(): Boolean =
+fun <ID : Comparable<ID>> Aggregate<ID>.chooseLeader(): ID =
     boundedElection(localId, leaderRadius)
-        .also { setLeaderId(it) }
-        .let { it == localId }
-        .also { setLeader(it) }
 
-context(DistanceSensor, EnvironmentVariables)
+context(DistanceSensor)
 fun <ID : Comparable<ID>> Aggregate<ID>.findPotential(leader: Boolean): Double =
-    distanceTo(leader).also { set("potential", it) }
+    distanceTo(leader)
+
+context(DistanceSensor, LeaderSensor, EnvironmentVariables)
+fun <ID : Comparable<ID>> Aggregate<ID>.isLeader(): Boolean =
+    (chooseLeader() == localId).also { setLeader(it) }

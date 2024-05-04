@@ -8,14 +8,14 @@ import it.unibo.alchemist.model.molecules.SimpleMolecule
 import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
 
 class ResourceSensorProperty<T, P : Position<P>>(
-    override val leaderInitialResource: Double,
     private val environment: Environment<T, P>,
     override val node: Node<T>,
+    override val leaderInitialResource: Double,
 ) : ResourceSensor, NodeProperty<T> {
     private val resourceMolecule = SimpleMolecule("resource")
 
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
-        ResourceSensorProperty(leaderInitialResource, environment, node)
+        ResourceSensorProperty(environment, node, leaderInitialResource)
 
     override fun getResource(): Double =
         node.getConcentration(resourceMolecule) as Double
