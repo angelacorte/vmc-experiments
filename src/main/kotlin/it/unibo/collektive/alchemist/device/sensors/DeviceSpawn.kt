@@ -9,6 +9,8 @@ interface DeviceSpawn {
 
     fun currentTime(): Double
 
+    val cloningRange: Double
+
 //    fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
 //
 //    fun spawnWithChildsNumber(): Boolean

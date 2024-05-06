@@ -37,7 +37,10 @@ variables:
     parameters: [1, [1, 10, 30, 50]]
   resourceRadius: &evaluationRadius
     type: ArbitraryVariable
-    parameters: [10.0, [ 12.0, 15.0, 17.5, 21.5 ] ]
+    parameters: [6.0, [ 12.0, 15.0, 17.5, 21.5 ] ]
+  cloningRange: &cloningRange
+    type: ArbitraryVariable
+    parameters: [ 1.0, [ 1.0, 2.0, 3.0, 4.0 ] ]
 
 seeds:
   scenario: *seed
@@ -78,7 +81,7 @@ deployments:
       - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
         parameters: [ *leaderInitialResource ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
-        parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds ]
+        parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds, *cloningRange ]
 
 #export:
   #  - type: MongoDBExporter

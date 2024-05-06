@@ -18,6 +18,8 @@ import it.unibo.collektive.lib.metrics.MyHopMetric
 import it.unibo.collektive.lib.obtainLocalSuccess
 import it.unibo.collektive.lib.spreadResource
 import kotlin.Double.Companion.POSITIVE_INFINITY
+import kotlin.math.absoluteValue
+import kotlin.math.withSign
 
 context(
     EnvironmentVariables,
@@ -59,7 +61,14 @@ fun Aggregate<Int>.predappio(
                     val relativeDestination = neighbors.map { it - localPosition }
                         .fold((0.5 - nextRandomDouble()) * 1.2 to (0.5 - nextRandomDouble()) * 1.2) { acc, pair -> acc + pair }
                     val absoluteDestination = localPosition - relativeDestination
-                    spawn(absoluteDestination)
+                    val finalCoordinates = when {
+                        relativeDestination.first.absoluteValue > cloningRange -> cloningRange.withSign(relativeDestination.first)
+                        else -> absoluteDestination.first
+                    } to when {
+                        relativeDestination.second.absoluteValue > cloningRange -> cloningRange.withSign(relativeDestination.second)
+                        else -> absoluteDestination.second
+                    } //todo must implement this with atan2 ecc
+                    spawn(finalCoordinates)
                 }
                 nextRandomDouble(0.0..resourceLowerBound) > localResource -> {
                     selfDestroy()

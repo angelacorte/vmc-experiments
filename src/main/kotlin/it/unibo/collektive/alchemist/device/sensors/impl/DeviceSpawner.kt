@@ -9,17 +9,22 @@ import it.unibo.alchemist.util.RandomGenerators.nextDouble
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.alchemist.device.sensors.DeviceSpawn
 import org.apache.commons.math3.random.RandomGenerator
+import kotlin.math.absoluteValue
 import kotlin.math.nextUp
+import kotlin.math.withSign
 
 class DeviceSpawner<T, P : Position<P>>(
     private val randomGenerator: RandomGenerator,
     private val environment: Environment<T, P>,
     override val node: Node<T>,
+    override val cloningRange: Double = 1.4,
 ) : DeviceSpawn, NodeProperty<T> {
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
         DeviceSpawner(randomGenerator, environment, node)
 
-    override fun <ID : Comparable<ID>> Aggregate<ID>.spawn(coordinate: Pair<Double, Double>): Double {
+    override fun <ID : Comparable<ID>> Aggregate<ID>.spawn(
+        coordinate: Pair<Double, Double>,
+    ): Double {
         val spawningTime = environment.simulation.time + DoubleTime(randomGenerator.nextDouble(0.0.nextUp(), 0.1))
         val cloneOfThis = node.cloneNode(spawningTime)
         val updatedPosition = environment.makePosition(*coordinate.toList().toTypedArray())
