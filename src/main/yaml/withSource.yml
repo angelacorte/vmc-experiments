@@ -10,7 +10,7 @@ variables:
     default: 0
   radius: &leaderRadius
     type: ArbitraryVariable
-    parameters: [15.0, [12.0, 15.0, 17.5, 21.5]]
+    parameters: [1500.0, [12.0, 15.0, 17.5, 21.5]]
   leaderInitialResource: &leaderInitialResource
     type: ArbitraryVariable
     parameters: [500, [100, 300, 500, 1000]]
@@ -81,7 +81,7 @@ deployments:
       - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
         parameters: [ *leaderInitialResource ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
-        parameters: [ *spawningRatio, *resourceUpperBound, *maxChilds, *cloningRange ]
+        parameters: [ *cloningRange ]
 
 #export:
   #  - type: MongoDBExporter

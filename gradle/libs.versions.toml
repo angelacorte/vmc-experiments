@@ -8,6 +8,7 @@ kotest = "5.8.1"
 alchemist = { module = "it.unibo.alchemist:alchemist", version.ref = "alchemist" }
 alchemist-incarnation-protelis = { module = "it.unibo.alchemist:alchemist-incarnation-protelis", version.ref = "alchemist" }
 alchemist-swingui = { module = "it.unibo.alchemist:alchemist-swingui", version.ref = "alchemist" }
+alchemist-ui-tooling = { module = "it.unibo.alchemist:alchemist-ui-tooling", version.ref = "alchemist" }
 alchemist-euclidean-geometry = { module = "it.unibo.alchemist:alchemist-euclidean-geometry", version.ref = "alchemist" }
 collektive = { module = "it.unibo.collektive:dsl", version.ref = "collektive" }
 collektive-incarnation = { module = "it.unibo.collektive:alchemist-incarnation-collektive", version.ref = "collektive" }
@@ -18,7 +19,13 @@ kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", ve
 kotest-runner-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 
 [bundles]
-alchemist = ["alchemist", "alchemist-euclidean-geometry", "alchemist-incarnation-protelis", "alchemist-swingui"]
+alchemist = [
+    "alchemist",
+    "alchemist-euclidean-geometry",
+    "alchemist-incarnation-protelis",
+    "alchemist-swingui",
+    "alchemist-ui-tooling"
+]
 collektive = ["collektive", "collektive-incarnation", "collektive-plugin"]
 kotlin-testing-common = [
     "kotest-assertions-core",

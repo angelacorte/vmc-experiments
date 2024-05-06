@@ -26,9 +26,8 @@ fun <ID : Comparable<ID>> Aggregate<ID>.generateResource(isLeader: Boolean): Dou
     when {
         isLeader -> {
             val finalResource = displacements()
-                .map {
-                    sqrt(it.first.pow(2.0) + it.second.pow(2.0))
-                }.filterNot { it == 0.0 }
+                .map { sqrt(it.first.pow(2.0) + it.second.pow(2.0)) }
+                .filterNot { it == 0.0 }
                 .fold(leaderInitialResource) { acc, distance ->
                     acc - (acc * (1.0 - (distance / evaluationRadius).absoluteValue)) //TODO check if this formula is correct
                 }

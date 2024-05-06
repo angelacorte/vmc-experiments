@@ -50,9 +50,11 @@ fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
                 else -> 0.0
             }
         }
-    val overallChildrenSuccess = childrenSuccess.hood(Double.POSITIVE_INFINITY) { a, b -> a + b }
+    val selfConsumption = myLocalResources / childrenSuccess.toMap().size
+    val resourcesToSpread = myLocalResources - selfConsumption
+    val overallChildrenSuccess = childrenSuccess.hood(Double.NEGATIVE_INFINITY) { a, b -> a + b }
 //    val myInitialSuccess = localSuccess - overallChildrenSuccess
-    childrenSuccess.map { if (overallChildrenSuccess <= 0) 0.0 else it * myLocalResources / overallChildrenSuccess }
+    childrenSuccess.map { if (overallChildrenSuccess <= 0) 0.0 else it * resourcesToSpread / overallChildrenSuccess }
         .yielding {
             neighboring(myLocalResources)
         }
