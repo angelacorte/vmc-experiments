@@ -22,7 +22,7 @@ class LocationSensorProperty<T : Any, P : Position<P>>(
 
     override fun displacements(): List<Pair<Double, Double>> {
         val myPos = environment.getPosition(node).coordinates
-        return neighborhoodInsideRadius().filter { n ->
+        return environment.getNodesWithinRange(node, evaluationRadius).filter { n ->
             n.getConcentration(SimpleMolecule("leader")) as Boolean
         }.map { n ->
             val nPos = environment.getPosition(n).coordinates

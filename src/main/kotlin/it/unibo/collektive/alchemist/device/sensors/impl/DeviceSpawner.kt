@@ -17,7 +17,7 @@ class DeviceSpawner<T, P : Position<P>>(
     private val randomGenerator: RandomGenerator,
     private val environment: Environment<T, P>,
     override val node: Node<T>,
-    override val cloningRange: Double = 1.4,
+    override val cloningRange: Double = 1.0,
 ) : DeviceSpawn, NodeProperty<T> {
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
         DeviceSpawner(randomGenerator, environment, node)

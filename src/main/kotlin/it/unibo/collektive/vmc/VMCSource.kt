@@ -19,14 +19,11 @@ import it.unibo.collektive.lib.isLeader
 import it.unibo.collektive.lib.metrics.MyHopMetric
 import it.unibo.collektive.lib.obtainLocalSuccess
 import it.unibo.collektive.lib.spreadResource
-import kotlin.Double.Companion.POSITIVE_INFINITY
 import kotlin.math.PI
-import kotlin.math.absoluteValue
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.hypot
 import kotlin.math.sin
-import kotlin.math.withSign
 
 context(
     EnvironmentVariables,
@@ -50,40 +47,49 @@ context(
 )
 @JvmOverloads
 fun Aggregate<Int>.predappio(
-    resourceLowerBound: Double = 10.0,
+    resourceLowerBound: Double = 1.0,
 //    certainSpawnThreshold: Double = 100.0,
-    maxChildren: Int = 1,
+    maxChildren: Int = 5,
     minSpawnWait: Double = 10.0,
 ): Double = with(MyHopMetric()) {
     vmc { potential: Double, localSuccess: Double, success: Double, localResource: Double ->
         val children = neighboring(findParent(potential))
             .fold(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
         val neighbors = neighboring(coordinates())
+        val neighborSize: Int = neighbors.excludeSelf().size
         val localPosition = neighbors.localValue
         val relativeDestination = neighbors.map { it - localPosition }
-            .hood(nextRandomDouble() to nextRandomDouble()) { acc, pair -> acc + pair }
+            .hood(nextRandomDouble(-1.0..1.0) to nextRandomDouble(-1.0..1.0)) { acc, pair -> acc + pair }
         val now = currentTime()
-        val lastChanged = repeat(now to listOf(potential, localSuccess, success, localResource)) { last ->
-            val current = listOf(potential, localSuccess, success, localResource)
-            if (current == last.second) { last } else { now to current }
-        }.first
-//        repeat(currentTime()) { time ->
-            val enoughTime = currentTime() > lastChanged + minSpawnWait
-//            val enoughTime = currentTime() > lastChanged + minSpawnWait
+        share(true) { neighborhoodIsStable ->
+            val everyoneIsStable = neighborhoodIsStable.fold(true) { acc, change -> acc && change }
+            val lastChanged = repeat(now to listOf(potential, localSuccess, success, localResource)) { last ->
+                val current = listOf(potential, localSuccess, success, localResource)
+                if (current == last.second) { last } else { now to current }
+            }.first
+            val enoughTime = now > lastChanged + minSpawnWait
             when {
-                lastChanged < now && localResource < resourceLowerBound -> {
+                !enoughTime -> false
+                potential > 0.0 && children == 0 && enoughTime && localResource < resourceLowerBound && everyoneIsStable -> {
                     selfDestroy()
+                    false
                 }
-                !enoughTime -> Unit
-                localResource / (2 + children) > resourceLowerBound && children < maxChildren -> {
-//                nextRandomDouble(0.0..certainSpawnThreshold) < localResource && children < maxChildren -> {
-                    val absoluteDestination = evaluateNewPosition(localPosition, relativeDestination, cloningRange)
+                localResource / (2 + children) > resourceLowerBound && children < maxChildren || neighborSize == 0 && everyoneIsStable -> {
+                    val angle = PI +
+                        atan2(relativeDestination.second, relativeDestination.first) +
+                        nextRandomDouble(-PI / 6..PI / 6)
+                    val norm = hypot(relativeDestination.first, relativeDestination.second)
+                        .coerceIn(2 * cloningRange / 3, cloningRange)
+                    val x = norm * cos(angle)
+                    val y = norm * sin(angle)
+                    val absoluteDestination = localPosition + (x to y)
+//                    println("$localId@(${coordinates()}) -> Last changed: $lastChanged, potential: $potential")
                     spawn(absoluteDestination)
+                    false
                 }
-//                nextRandomDouble(0.0..resourceLowerBound) > localResource -> {
-//                else -> now
+                else -> true
             }
-//        }
+        }
     }
 }
 
@@ -101,7 +107,7 @@ fun Aggregate<Int>.vmc(spawner: Spawner): Double {
     val potential = findPotential(isLeader)
     val localSuccess = obtainLocalSuccess()
     val success = convergeSuccess(potential, localSuccess)
-    val localResource = spreadResource(potential, success, isLeader)
+    val localResource = spreadResource(potential, success)
     spawner(this@DeviceSpawn, this@LocationSensor, this, potential, localSuccess, success, localResource)
     return localResource
 }
@@ -112,16 +118,3 @@ operator fun Pair<Double, Double>.minus(other: Pair<Double, Double>): Pair<Doubl
     first - other.first to second - other.second
 operator fun Pair<Double, Double>.plus(other: Pair<Double, Double>): Pair<Double, Double> =
     first + other.first to second + other.second
-
-private fun evaluateNewPosition(
-    localPosition: Pair<Double, Double>,
-    relativeDestination: Pair<Double, Double>,
-    cloningRange: Double,
-): Pair<Double, Double> {
-    val angle = PI + atan2(relativeDestination.second, relativeDestination.first)
-    val norm = hypot(relativeDestination.first, relativeDestination.second)
-        .coerceIn(0.1 * cloningRange, cloningRange)
-    val x = norm * cos(angle)
-    val y = norm * sin(angle)
-    return localPosition + (x to y)
-}

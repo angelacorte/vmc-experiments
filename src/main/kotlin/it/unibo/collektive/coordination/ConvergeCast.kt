@@ -2,6 +2,8 @@ package it.unibo.collektive.coordination
 
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
+import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
+import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
 import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 import it.unibo.collektive.field.Field.Companion.hood
@@ -32,6 +34,7 @@ fun <T, ID : Comparable<ID>> Aggregate<ID>.convergeCast(
     }
 }
 
+context(EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
     potential: Double,
     localResource: Double,
@@ -50,7 +53,8 @@ fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
                 else -> 0.0
             }
         }
-    val selfConsumption = myLocalResources / childrenSuccess.toMap().size
+    val selfConsumption = myLocalResources / childrenSuccess.fold(1) { a, b -> a + (1.takeIf { b > 0 } ?: 0) }
+    if (potential > 0.0) set("resource", selfConsumption)
     val resourcesToSpread = myLocalResources - selfConsumption
     val overallChildrenSuccess = childrenSuccess.hood(Double.NEGATIVE_INFINITY) { a, b -> a + b }
 //    val myInitialSuccess = localSuccess - overallChildrenSuccess

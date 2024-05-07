@@ -13,7 +13,7 @@ fun <ID : Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
 ): ID {
     data class Candidacy<ID : Any>(val strength: C, val distance: Double, val leaderId: ID) : Comparable<Candidacy<ID>> {
         override fun compareTo(other: Candidacy<ID>): Int =
-            Comparator<Candidacy<ID>> { a, b -> a.strength.compareTo(b.strength) }
+            Comparator<Candidacy<ID>> { a, b -> b.strength.compareTo(a.strength) }
                 .thenBy { it.distance }
                 .thenBy {
                     when (it.leaderId) {
