@@ -1,0 +1,112 @@
+network-model:
+  type: ConnectWithinDistance
+  parameters: [1.5]
+
+variables:
+  seed: &seed
+    min: 0
+    max: 20
+    step: 1
+    default: 0
+  radius: &leaderRadius
+    type: ArbitraryVariable
+    parameters: [1500.0, [12.0, 15.0, 17.5, 21.5]]
+  leaderInitialResource: &leaderInitialResource
+    type: ArbitraryVariable
+    parameters: [500, [100, 300, 500, 1000]]
+  resourceUpperBound: &resourceUpperBound
+    type: ArbitraryVariable
+    parameters: [10, [50, 200, 300, 500]]
+  resourceLowerBound: &resourceLowerBound
+    type: ArbitraryVariable
+    parameters: [10, [10, 20, 50, 100]]
+  spawningRatio: &spawningRatio
+    type: ArbitraryVariable
+    parameters: [500, [100, 300, 500, 1000]]
+  maxChilds: &maxChilds
+    type: ArbitraryVariable
+    parameters: [5, [2, 5, 10, 20]]
+  layerXY: &layerXY
+    type: ArbitraryVariable
+    parameters: [10.0, [4.0, 10.0, 17.0]]
+  maxSuccess: &maxSuccess
+    type: ArbitraryVariable
+    parameters: [40, [10, 40, 100, 150]]
+  initialNodes: &initialNodes
+    type: ArbitraryVariable
+    parameters: [1, [1, 10, 30, 50]]
+  resourceRadius: &evaluationRadius
+    type: ArbitraryVariable
+    parameters: [6.0, [ 12.0, 15.0, 17.5, 21.5 ] ]
+  cloningRange: &cloningRange
+    type: ArbitraryVariable
+    parameters: [ 1.0, [ 1.0, 2.0, 3.0, 4.0 ] ]
+
+seeds:
+  scenario: *seed
+  simulation: *seed
+
+layers:
+  - type: BidimensionalGaussianLayer
+    parameters: [*layerXY, *layerXY, *maxSuccess, 10.0]
+    molecule: successSource
+
+incarnation: collektive
+
+_pool: &program
+  - time-distribution: 1
+    type: Event
+    actions:
+      - type: RunCollektiveProgram
+        parameters: [it.unibo.collektive.vmc.VMCSourceKt.vmcSource]
+
+deployments:
+  - type: Rectangle
+    parameters: [*initialNodes, 0, 0, 20, 20]
+    programs:
+      - *program
+    contents:
+      - molecule: leader
+        concentration: false
+
+    properties:
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
+        parameters: [ *maxSuccess ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
+        parameters: [ *leaderRadius ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
+        parameters: [ *evaluationRadius ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
+        parameters: [ *leaderInitialResource ]
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.DeviceSpawner
+        parameters: [ *cloningRange ]
+
+#export:
+  #  - type: MongoDBExporter
+  #    parameters:
+  #      uri: mongodb://localhost:27017
+  #      dbName: simulation
+  #    data:
+  #      - time
+  #      - molecule: "org:protelis:tutorial:distanceTo"
+  #        aggregators: [mean, min, max]
+  #        value-filter: onlyfinite
+#  - type: CSVExporter
+#    parameters:
+#      fileNameRoot: convergeCast
+#      interval: 1
+#      exportPath: data
+#    data:
+#      - time
+#      - molecule: "it.unibo.collektive.vmc.VMCSourceKt.vmcSource"
+#        aggregators: [mean, min, max]
+#        value-filter: onlyfinite
+#
+#displacements:
+#  - in:
+#      type: Grid
+#      parameters: [0, 0, 3, 2, 1, 1, 0.1, 0.1]
+#    programs:
+#      - *program

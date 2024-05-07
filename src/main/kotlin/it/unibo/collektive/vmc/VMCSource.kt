@@ -52,7 +52,7 @@ context(
 fun Aggregate<Int>.predappio(
     resourceLowerBound: Double = 10.0,
 //    certainSpawnThreshold: Double = 100.0,
-    maxChildren: Int = 3,
+    maxChildren: Int = 1,
     minSpawnWait: Double = 10.0,
 ): Double = with(MyHopMetric()) {
     vmc { potential: Double, localSuccess: Double, success: Double, localResource: Double ->
@@ -77,12 +77,7 @@ fun Aggregate<Int>.predappio(
                 !enoughTime -> Unit
                 localResource / (2 + children) > resourceLowerBound && children < maxChildren -> {
 //                nextRandomDouble(0.0..certainSpawnThreshold) < localResource && children < maxChildren -> {
-                    val angle = PI + atan2(relativeDestination.second, relativeDestination.first)
-                    val norm = hypot(relativeDestination.first, relativeDestination.second)
-                        .coerceIn(0.1 * cloningRange, cloningRange)
-                    val x = norm * cos(angle)
-                    val y = norm * sin(angle)
-                    val absoluteDestination = localPosition + (x to y)
+                    val absoluteDestination = evaluateNewPosition(localPosition, relativeDestination, cloningRange)
                     spawn(absoluteDestination)
                 }
 //                nextRandomDouble(0.0..resourceLowerBound) > localResource -> {
@@ -117,3 +112,16 @@ operator fun Pair<Double, Double>.minus(other: Pair<Double, Double>): Pair<Doubl
     first - other.first to second - other.second
 operator fun Pair<Double, Double>.plus(other: Pair<Double, Double>): Pair<Double, Double> =
     first + other.first to second + other.second
+
+private fun evaluateNewPosition(
+    localPosition: Pair<Double, Double>,
+    relativeDestination: Pair<Double, Double>,
+    cloningRange: Double,
+): Pair<Double, Double> {
+    val angle = PI + atan2(relativeDestination.second, relativeDestination.first)
+    val norm = hypot(relativeDestination.first, relativeDestination.second)
+        .coerceIn(0.1 * cloningRange, cloningRange)
+    val x = norm * cos(angle)
+    val y = norm * sin(angle)
+    return localPosition + (x to y)
+}
