@@ -54,12 +54,15 @@ fun Aggregate<Int>.predappio(
 ): Double = with(MyHopMetric()) {
     vmc { potential: Double, localSuccess: Double, success: Double, localResource: Double ->
         val children = neighboring(findParent(potential))
+        set("children-around", children)
+        val childrenCount = children
             .fold(0) { acc, parent -> acc + if (parent == localId) 1 else 0 }
+        set("children-count", childrenCount)
         val neighbors = neighboring(coordinates())
         val neighborSize: Int = neighbors.excludeSelf().size
         val localPosition = neighbors.localValue
-        val relativeDestination = neighbors.map { it - localPosition }
-            .hood(nextRandomDouble(-1.0..1.0) to nextRandomDouble(-1.0..1.0)) { acc, pair -> acc + pair }
+        val relativePositions = neighbors.map { it - localPosition }
+        val neighborPositions = relativePositions.excludeSelf().values
         val now = currentTime()
         share(true) { neighborhoodIsStable ->
             val everyoneIsStable = neighborhoodIsStable.fold(true) { acc, change -> acc && change }
@@ -68,24 +71,60 @@ fun Aggregate<Int>.predappio(
                 if (current == last.second) { last } else { now to current }
             }.first
             val enoughTime = now > lastChanged + minSpawnWait
+            set("enough-time", enoughTime)
+            set("everyone-is-stable", everyoneIsStable)
             when {
                 !enoughTime -> false
-                potential > 0.0 && children == 0 && enoughTime && localResource < resourceLowerBound && everyoneIsStable -> {
+                potential > 0.0 && childrenCount == 0 && localResource < resourceLowerBound && everyoneIsStable -> {
                     selfDestroy()
                     false
                 }
-                localResource / (2 + children) > resourceLowerBound && children < maxChildren || neighborSize == 0 && everyoneIsStable -> {
-                    val angle = PI +
-                        atan2(relativeDestination.second, relativeDestination.first) +
-                        nextRandomDouble(-PI / 6..PI / 6)
-                    val norm = hypot(relativeDestination.first, relativeDestination.second)
-                        .coerceIn(2 * cloningRange / 3, cloningRange)
-                    val x = norm * cos(angle)
-                    val y = norm * sin(angle)
-                    val absoluteDestination = localPosition + (x to y)
-//                    println("$localId@(${coordinates()}) -> Last changed: $lastChanged, potential: $potential")
-                    spawn(absoluteDestination)
-                    false
+                localResource / (2 + childrenCount) > resourceLowerBound && childrenCount < maxChildren || neighborSize == 0 && everyoneIsStable -> {
+//                    val angle = PI +
+//                        atan2(relativeDestination.second, relativeDestination.first) +
+//                        nextRandomDouble(-PI / 6..PI / 6)
+//                    val norm = hypot(relativeDestination.first, relativeDestination.second)
+//                        .takeIf { it >= cloningRange }
+//                    when (norm) {
+//                        null -> true
+//                        else -> {
+//                            val x = cloningRange * cos(angle)
+//                            val y = cloningRange * sin(angle)
+//                            val absoluteDestination = localPosition + (x to y)
+//                            spawn(absoluteDestination)
+//                            false
+//                        }
+//                    }
+                    val angles = neighborPositions.map { atan2(it.second, it.first) }
+                    val angle = when {
+                        angles.isEmpty() -> nextRandomDouble(0.0..2 * PI)
+                        angles.size == 1 -> angles.first() + PI
+                        else -> {
+                            val fullCircle = angles + (angles.first() + 2 * PI)
+                            data class Angle(val from: Double, val arc: Double) : Comparable<Angle> {
+                                override fun compareTo(other: Angle): Int =
+                                    compareBy(Angle::arc).thenBy(Angle::from).compare(this, other)
+                            }
+                            val differences = fullCircle
+                                .sorted()
+                                .zipWithNext { a, b -> Angle(a, b - a) }
+                            val largest = differences.max()
+                            when {
+                                largest.arc >= 2 * PI / maxChildren -> largest.from + largest.arc / 2
+                                else -> Double.NaN
+                            }
+                        }
+                    }
+                    when {
+                        angle.isNaN() -> true
+                        else -> {
+                            val x = cloningRange * cos(angle)
+                            val y = cloningRange * sin(angle)
+                            val absoluteDestination = localPosition + (x to y)
+                            spawn(absoluteDestination)
+                            false
+                        }
+                    }
                 }
                 else -> true
             }
