@@ -47,7 +47,6 @@ context(
 @JvmOverloads
 fun Aggregate<Int>.spawnAndDestroyAfterStability(
     resourceLowerBound: Double = 1.0,
-//    certainSpawnThreshold: Double = 100.0,
     maxChildren: Int = 5,
     minSpawnWait: Double = 20.0,
 ): Double = with(this@DistanceSensor) {
@@ -165,10 +164,3 @@ fun <T> Iterable<T>.randomElementWeighted(by: T.() -> Double): T {
     }
     return last()
 }
-//
-// fun main() {
-//    println(
-// //        Gaussian(2.0, 1.0).value(0.0)
-//        generateSequence { MersenneTwister().nextGaussian() * 0.1 }.take(30).toList()
-//    )
-// }
