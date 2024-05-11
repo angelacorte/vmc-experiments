@@ -53,9 +53,22 @@ jobs:
         with:
           name: charts
           path: charts.tar.zst
+  check-simulations-docker:
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: container-check${{ github.workflow }}${{ matrix.os }}${{ github.event.number || github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      - name: Prepare docker-compose to be tested in CI
+        run: sed 's/CI:\s.*/CI:\ \"true\"/g' -i docker-compose.yml
+      - name: Run compose
+        run: docker-compose up --build
   release:
     needs:
       - check-simulations-native
+      - check-simulations-docker
       - create-charts
     runs-on: ubuntu-22.04
     concurrency:
@@ -99,6 +112,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - create-charts
+      - check-simulations-docker
       - check-simulations-native
       - release
     if: >-
