@@ -44,14 +44,26 @@ To this end, we designed a set of five experiments:
 - self-segmentation of a larger structure (budding), and
 - self-optimisation of multiple large structures into a more efficient one (abscission and regrowth).
 
-## How to reproduce the experiments
+## Reproduce the entire experiment
 
-Please follow the given instructions to replicate the entire experiment in its native environment. 
+**WARNING**: re-running the whole experiment may take a very long time on a normal computer.
 
-Use
+### Reproduce the experiments through Gradle
+
+To reproduce the experiments, 
+    you need to clone this repository on your pc,
+    moving into the root folder and running the following command:
+
 ```shell
 ./gradlew run<ExperimentName>Graphic
 ```
 substituting <ExperimentName> with the name of the experiment (in PascalCase) specified in the YAML simulation file.
 
-Or execute ./gradlew tasks to view the list of available tasks.
+Or execute ```./gradlew tasks``` to view the list of available tasks.
+
+The corresponding YAML simulation files to the experiments cited above are the following:
+- _oneRoot_: self-construction from a single node (growth from seed),
+- _cutting_: self-repair after disruption (network segmentation) with no regeneration (cutting),
+- _graft_: self-integration of multiple FieldVMC systems (grafting)
+- _graftWithMoreLeaders_: self-segmentation of a larger structure (budding), and
+- _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth).
