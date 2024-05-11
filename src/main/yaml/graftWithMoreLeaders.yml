@@ -9,7 +9,7 @@ variables:
     step: 1
     default: 0
   radius: &leaderRadius
-    100.0
+    7.5
   leaderInitialResource: &leaderInitialResource
     type: ArbitraryVariable
     parameters: [1000, [100, 300, 500, 1000]]
