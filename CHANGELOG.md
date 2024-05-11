@@ -1,3 +1,103 @@
+## 1.0.0 (2024-05-11)
+
+
+### Features
+
+* add action for cloning nodes ([e3a615d](https://github.com/angelacorte/vmc-experiments/commit/e3a615d249fdd42aace8bd6d9405d2b1b8d226a9))
+* add check on childs spawning limit ([4312245](https://github.com/angelacorte/vmc-experiments/commit/43122450675eea1911607982ef7a787092afd5da))
+* add converge cast ([c7ed5a2](https://github.com/angelacorte/vmc-experiments/commit/c7ed5a2553a0cb4c7c3c85f31e87214ebc16e2da))
+* add converge cast and spread to children ([1f6b4bd](https://github.com/angelacorte/vmc-experiments/commit/1f6b4bd3de90c6460dbc000dbeffdadd600ea15d))
+* add costants for formulas ([fab3ea1](https://github.com/angelacorte/vmc-experiments/commit/fab3ea1c3e9837a823cb4df065d23b07a2d5f070))
+* add distancebetween function ([7528a7a](https://github.com/angelacorte/vmc-experiments/commit/7528a7a8e090dcfd978f3526d3460e7bb5058b7e))
+* add function to set the leader id ([62f8952](https://github.com/angelacorte/vmc-experiments/commit/62f89523614698af4dbe9f143663de559a7f886b))
+* add more parameters ([cbc2c7c](https://github.com/angelacorte/vmc-experiments/commit/cbc2c7cafee8437a9e45dcaec6985c26b1132c06))
+* add random generator ([be37bf3](https://github.com/angelacorte/vmc-experiments/commit/be37bf366de25f2b07125e6fd401557b59fc0d31))
+* add random sensor ([c2fb6a3](https://github.com/angelacorte/vmc-experiments/commit/c2fb6a35ccde08ba9d02ba5bfce63ae2258cbb65))
+* add resource upper bound ([8279b93](https://github.com/angelacorte/vmc-experiments/commit/8279b939adb6d03df086d05ba5467a44d30d9d97))
+* add seed for random and layer ([5c9f058](https://github.com/angelacorte/vmc-experiments/commit/5c9f058e0b7122303fc16e63d4b36e744d053da3))
+* add sensor interface ([16754cb](https://github.com/angelacorte/vmc-experiments/commit/16754cba2b9f47af9939dae96ec134556f0d7273))
+* add simulation for converge and spread ([e4b200e](https://github.com/angelacorte/vmc-experiments/commit/e4b200e36b91734f9650147fb8548d611f7dcd01))
+* add vmc's draft algorithm ([dcfa791](https://github.com/angelacorte/vmc-experiments/commit/dcfa791a1fdd148bef449b89f8f1d44c73e8b972))
+* change method for setting molecules ([3366426](https://github.com/angelacorte/vmc-experiments/commit/336642676c169554eccb48163a8872f0ddd3365a))
+* change simulation entrypoint ([cf699dc](https://github.com/angelacorte/vmc-experiments/commit/cf699dcb45af281c528d8ff01e398de1b0427557))
+* change simulation's parameters ([255a97a](https://github.com/angelacorte/vmc-experiments/commit/255a97aeabcd927b9361b24ce74553749bdfc5d0))
+* create clone action ([4db27e5](https://github.com/angelacorte/vmc-experiments/commit/4db27e5127dcf112f0fcfb6cd13ac2b70d9a393a))
+* create device destroyer sensor ([80c57b6](https://github.com/angelacorte/vmc-experiments/commit/80c57b66e9499559a861be4a11472215997749ff))
+* create device spawner sensor ([25acfc9](https://github.com/angelacorte/vmc-experiments/commit/25acfc9d425c10d2989a5d42379eb085a522f83d))
+* create device's location sensor ([42c3296](https://github.com/angelacorte/vmc-experiments/commit/42c3296b57cfe67dc5affa9d36646b4e7ede89d7))
+* create entrypoint for converge and spread ([2063c7f](https://github.com/angelacorte/vmc-experiments/commit/2063c7fc0ecc47662e9db0e7a8c77eb783abc28d))
+* create entrypoint for vmc simulation ([7f25c5c](https://github.com/angelacorte/vmc-experiments/commit/7f25c5cece24c594946c594adc476d00619b5917))
+* create gradient cast and distanceTo ([67a42b8](https://github.com/angelacorte/vmc-experiments/commit/67a42b8e94aa92e27cddcec0f537a4487e2ff4f4))
+* create leader sensor ([f0d5999](https://github.com/angelacorte/vmc-experiments/commit/f0d5999153e14ea1a4267cc695c71ea43e1c4187))
+* create light sensor ([8b30729](https://github.com/angelacorte/vmc-experiments/commit/8b307297c06b7e4b5e8d5d3bb79a5255b7932072))
+* create proper modules for program concepts ([57a1413](https://github.com/angelacorte/vmc-experiments/commit/57a14136e6c25d0eb1988a2b10654901028ecc6d))
+* create resource sensor ([c7a1655](https://github.com/angelacorte/vmc-experiments/commit/c7a1655229da1083176847ec85bc21a98be161b8))
+* create success sensor ([b00bdb0](https://github.com/angelacorte/vmc-experiments/commit/b00bdb0bc88c4bf140772bdea027973516455ca7))
+* create success source layer ([acb1352](https://github.com/angelacorte/vmc-experiments/commit/acb13527e2ab5e5691f1bb7a9b94bcfa727d15c5))
+* delete useless cloning action ([e3747ea](https://github.com/angelacorte/vmc-experiments/commit/e3747ea691663225dd9964f6f190d766d21042bd))
+* get variables from environment ([7136152](https://github.com/angelacorte/vmc-experiments/commit/7136152a9e5a577a56a0d9e2ae85784a90ae4c8a))
+* implement spawn based on childs number ([2e5edc8](https://github.com/angelacorte/vmc-experiments/commit/2e5edc849935a627cf0fc0b139888ce55aa98742))
+* introduce layer property management ([407b947](https://github.com/angelacorte/vmc-experiments/commit/407b9475ef155d8b1c617fcfe6362ffa645af86d))
+* parametrized initial nodes value ([7e8ee09](https://github.com/angelacorte/vmc-experiments/commit/7e8ee09a4d049d31a75f91071e743d3433608f52))
+* remove simulation template ([39b11ea](https://github.com/angelacorte/vmc-experiments/commit/39b11ea70c763727b06620d9b41344a5da2b6a80))
+* remove useless classes ([e993d64](https://github.com/angelacorte/vmc-experiments/commit/e993d6447eb1f29ea0b051eda24080f548288511))
+* remove useless node contents clone ([81c1a18](https://github.com/angelacorte/vmc-experiments/commit/81c1a18b2c8a27c3c669c5a36b727d09cbdf7dfa))
+* remove useless sensors ([2363ec2](https://github.com/angelacorte/vmc-experiments/commit/2363ec2a63f63aa46ceec4045aa17d5bc8087abf))
+* rename block c into converge cast ([b0ab0c5](https://github.com/angelacorte/vmc-experiments/commit/b0ab0c566b87fef740f680445c8c20dcdb3d1ae0))
+* rename random class ([2e51531](https://github.com/angelacorte/vmc-experiments/commit/2e515315c0cda875482c04cb2f773d68d349c826))
+* run program with generic contexts ([9699070](https://github.com/angelacorte/vmc-experiments/commit/9699070a8ad33b3e2c522d7d25c24477d8c28852))
+* running simulations with spawning, destroying and not ([47b5914](https://github.com/angelacorte/vmc-experiments/commit/47b5914276b0cc26cfb52c6a1d72a864b05587ec))
+* spawn nodes farther from parent ([241726a](https://github.com/angelacorte/vmc-experiments/commit/241726a1aacba27c4509a6b43464ea1c3118a992))
+* update yaml configuration ([1ca5896](https://github.com/angelacorte/vmc-experiments/commit/1ca58969f90bb1052537a9221e3b3601c210ebf9))
+* use new contexts instead of environment variables ([261114b](https://github.com/angelacorte/vmc-experiments/commit/261114ba92e9cc7be493110cec440264dcc8ac5c))
+* use new properties instead of molecules ([bc5d8c6](https://github.com/angelacorte/vmc-experiments/commit/bc5d8c6a09d13b434a56acf327c426f674dd23de))
+* use new sensors ([9d4e783](https://github.com/angelacorte/vmc-experiments/commit/9d4e7830cb505b39eecd7667ceab4dc5db2bf70f))
+* using Bidimensional gaussian layer ([38520dc](https://github.com/angelacorte/vmc-experiments/commit/38520dc556d736b1f09548bb2d39d3bb229d56fd))
+* using bounded election ([866202e](https://github.com/angelacorte/vmc-experiments/commit/866202e9d883ff26f76a4d30704abf30e70f6845))
+* using environment variables for setting molecules ([e9c7cd1](https://github.com/angelacorte/vmc-experiments/commit/e9c7cd1fbe1005bc4aa2192350c6282fcee0a50d))
+* working bounded election ([995c008](https://github.com/angelacorte/vmc-experiments/commit/995c008b43e59c4fc8a9ca2c3651b1d3123b963c))
+
+
+### Dependency updates
+
+* **deps:** add collektive and alchemist dependencies ([cca7e3f](https://github.com/angelacorte/vmc-experiments/commit/cca7e3f396c9b1c913692bfc67dbe69f49c7d4ea))
+* **deps:** add compiler plugin dependency and context receivers ([4c239f1](https://github.com/angelacorte/vmc-experiments/commit/4c239f198f466e149d9890dbb7d97d507675eb8e))
+* **deps:** add kotest depencencies ([789ed52](https://github.com/angelacorte/vmc-experiments/commit/789ed52a6c7c6b66d01dc0803dd27a3feda21455))
+* **deps:** update collektive version ([1d36b87](https://github.com/angelacorte/vmc-experiments/commit/1d36b870799006c84db2bfe8555c869bd20efc72))
+* **deps:** update collektive version ([1e00dfb](https://github.com/angelacorte/vmc-experiments/commit/1e00dfba871edbd01d1bbc49e0525ca84cb26f68))
+
+
+### Bug Fixes
+
+* add correct parameter to property ([f117c32](https://github.com/angelacorte/vmc-experiments/commit/f117c32f566149101b432b717a3b9110a6481b8f))
+* change arbitrary variable value ([20d3782](https://github.com/angelacorte/vmc-experiments/commit/20d37825512d12078e9f7de2d361cfcf53a08d8a))
+* change docker username ([0138ae8](https://github.com/angelacorte/vmc-experiments/commit/0138ae83b139c55a003ad0bb380134c1571ff47a))
+* correct molecule name ([8b839ad](https://github.com/angelacorte/vmc-experiments/commit/8b839adba2fdbe0e62177b5a35802fedeca4cf31))
+* get initial resource as parameter ([0bfe2de](https://github.com/angelacorte/vmc-experiments/commit/0bfe2de43e90ae280b1f852672e19e3741742451))
+* ignore branches ([019a274](https://github.com/angelacorte/vmc-experiments/commit/019a27456ac1f222a1cd45b1d20e2b8509f3ce8b))
+* remove useless aggregate context ([dc044f6](https://github.com/angelacorte/vmc-experiments/commit/dc044f694c5ceaed7f733b112599ee5c42fe2081))
+* typo in parameter ([4f546cf](https://github.com/angelacorte/vmc-experiments/commit/4f546cf8690700173dd7be4cf816671051e3b265))
+
+
+### General maintenance
+
+* add effects for converge and spread simulation ([1f1145f](https://github.com/angelacorte/vmc-experiments/commit/1f1145f0d780db0d303e5e37c68d84788d0a5b46))
+* add kotlin reflect ([915a0bb](https://github.com/angelacorte/vmc-experiments/commit/915a0bbcedaff3dd65f52682603af11c1bf79b0d))
+* add setting molecule ([665788e](https://github.com/angelacorte/vmc-experiments/commit/665788e3d5b3137d2722ee5f859bd1734553c9fe))
+* change project name ([f1631ac](https://github.com/angelacorte/vmc-experiments/commit/f1631ac21ae11d8c7a2438e2dd316b5bb8a1c3b6))
+* remove check simulations docker ([cf27cce](https://github.com/angelacorte/vmc-experiments/commit/cf27cceef64950f6f100ed9db683f8106091dc61))
+* remove print ([f228fad](https://github.com/angelacorte/vmc-experiments/commit/f228fad5273903d03bfc52b24ec1a6c36fc2d696))
+* remove unused imports ([061c3d5](https://github.com/angelacorte/vmc-experiments/commit/061c3d5e4aa2b0fa140d1aebc35970876cd5e21d))
+* update effects ([0b81829](https://github.com/angelacorte/vmc-experiments/commit/0b81829b94a16ed4a64d2eb333ae394e0b3acb22))
+
+
+### Refactoring
+
+* delete unused simulations ([9eb7338](https://github.com/angelacorte/vmc-experiments/commit/9eb7338f231bb94650487ff749b089c4fc324b13))
+* modulize program ([ba76a88](https://github.com/angelacorte/vmc-experiments/commit/ba76a883683d7b26b0a07e01c0f095abd1197fde))
+* move classes into proper package ([15f192d](https://github.com/angelacorte/vmc-experiments/commit/15f192dd8ecef8d470d4c6db7f8f9e0efc7ec50f))
+* moved my hop metric ([cff8cb2](https://github.com/angelacorte/vmc-experiments/commit/cff8cb2bd6c404e8172ccc1fe805ce1ed2d24115))
+
 ## [1.2.1](https://github.com/DanySK/alchemist-experiments-bootstrap/compare/1.2.0...1.2.1) (2024-02-09)
 
 
