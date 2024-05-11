@@ -1,58 +1,57 @@
-# Alchemist Experiments Bootstrap
+# _An Aggregate Vascular Morphogenesis Controller for Engineered Self-Organising Spatial Structures_
 
-A customized Alchemist Primer with releases and data analysis ready.
+#### Authors temporarily anonymised for double-blind review
 
-Upon generation of an experiment from this template:
-1. add a secret github token with `repo` permissions named `DEPLOYMENT_TOKEN`;
-2. edit the project name in `settings.gradle.kts`;
-3. edit the DockerHub user name in `docker-compose.yml`;
-4. add a secret called `DOCKER_PASSWORD` with your DockerHub password;
-5. edit the DockerHub password in `.github/workflows/build-and-deploy.yml`;
+## About
 
-## Reproduce the entire experiment
+In the field of evolutionary computing, the concept of Vascular Morphogenesis Controller (VMC) 
+has been proposed in to model the growth of artificial structures over time.
 
-**WARNING**: re-running the whole experiment may take a very long time on a normal computer.
+A thorough analysis of the VMC model revealed some limitations:
+- assumes the organisation structure is a tree, here intended as a directed acyclic graph with a single root and with a single path connecting the root with each leaf;
+- the model is implicitly synchronous, as it assumes that (i) the evaluation of the nodes must proceed from the leaves to the root (and back), and (ii) the update of the whole tree occurs atomically.
+  
+Although, depending on the context, these assumptions may be acceptable, in general they may induce (possibly hidden) 
+abstraction gaps when VMC is used to model real-world systems, and, at the same time, limit the applicability of the 
+pattern to engineered morphogenetic systems.
 
-### Reproduce with containers (recommended)
+To address these limitations, in this work, we propose FieldVMC: a generalisation of the VMC model as a field-based 
+computation, in the spirit of the Aggregate Programming (AP) paradigm.
 
-1. Install docker and docker-compose
-2. Run `docker-compose up`
-3. The charts will be available in the `charts` folder.
+## Experiments
 
-### Reproduce natively
+This repository contains the source code for the experiments presented in the paper
+"_An Aggregate Vascular Morphogenesis Controller for Engineered Self-Organising Spatial Structures_".
 
-1. Install a Gradle-compatible version of Java.
-  Use the [Gradle/Java compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html)
-  to learn which is the compatible version range.
-  The Version of Gradle used in this experiment can be found in the `gradle-wrapper.properties` file
-  located in the `gradle/wrapper` folder.
-2. Install the version of Python indicated in `.python-version` (or use `pyenv`).
-3. Launch either:
-    - `./gradlew runAllBatch` on Linux, MacOS, or Windows if a bash-compatible shell is available;
-    - `gradlew.bat runAllBatch` on Windows cmd or Powershell;
-4. Once the experiment is finished, the results will be available in the `data` folder. Run:
-    - `pip install --upgrade pip`
-    - `pip install -r requirements.txt`
-    - `python process.py`
-5. The charts will be available in the `charts` folder.
+The experiments want to show the capabilities of the proposed model in generating self-organising spatial structures.
 
-## Inspect a single experiment
+Some examples of the generated structures are shown below:
 
-Follow the instructions for reproducing the entire experiment natively, but instead of running `runAllBatch`,
-run `runEXPERIMENTGraphics`, replacing `EXPERIMENT` with the name of the experiment you want to run
-(namely, with the name of the YAML simulation file).
+|   ![starting_structure](./images/cutting01.png)    |        ![self-organised_structure](./images/cutting19.png)        |
+|:--------------------------------------------------:|:-----------------------------------------------------------------:|
+|                *Starting Structure*                |                    *Self-Organised Structure*                     |
+| ![structure_after_cutting](./images/cutting21.png) | ![self-organised_structure_after_cutting](./images/cutting27.png) |
+|       *Structure after cutting a part of it*       |           *Self-Organised Structure after the cutting*            | 
 
-If in doubt, run `./gradlew tasks` to see the list of available tasks.
+The images show the evolution of a structure from a starting configuration to a self-organised structure.
 
-To make changes to existing experiments and explore/reuse,
-we recommend to use the IntelliJ Idea IDE.
-Opening the project in IntelliJ Idea will automatically import the project, download the dependencies,
-and allow for a smooth development experience.
+The goal of this evaluation is to show that the proposed FieldVMC supports the construction of the same structures of its 
+predecessor, and, in addition, that it can work in scenarios not previously investigated. 
+To this end, we designed a set of five experiments:
+- self-construction from a single node (growth from seed),
+- self-repair after disruption (network segmentation) with no regeneration (cutting),
+- self-integration of multiple FieldVMC systems (grafting)
+- self-segmentation of a larger structure (budding), and
+- self-optimisation of multiple large structures into a more efficient one (abscission and regrowth).
 
-## Regenerate the charts
+## How to reproduce the experiments
 
-We keep a copy of the data in this repository,
-so that the charts can be regenerated without having to run the experiment again.
-To regenerate the charts, run `docker compose run --no-deps charts`.
-Alternatively, follow the steps or the "reproduce natively" section,
-starting after the part describing how to re-launch the simulations.
+Please follow the given instructions to replicate the entire experiment in its native environment. 
+
+Use
+```shell
+./gradlew run<ExperimentName>Graphic
+```
+substituting <ExperimentName> with the name of the experiment (in PascalCase) specified in the YAML simulation file.
+
+Or execute ./gradlew tasks to view the list of available tasks.
