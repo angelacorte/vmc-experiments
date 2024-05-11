@@ -1,3 +1,23 @@
+## [1.1.0](https://github.com/angelacorte/vmc-experiments/compare/1.0.0...1.1.0) (2024-05-11)
+
+
+### Features
+
+* add simulation with multi-leader election ([#1](https://github.com/angelacorte/vmc-experiments/issues/1)) ([aa4b7e8](https://github.com/angelacorte/vmc-experiments/commit/aa4b7e8d715fe89268cac562c7aa3af1c30f0b38))
+* first draft for readme ([efc77b1](https://github.com/angelacorte/vmc-experiments/commit/efc77b1f156b0eb52773c7e2b87852757dadb6a9))
+
+
+### Bug Fixes
+
+* ci release ([2b3441c](https://github.com/angelacorte/vmc-experiments/commit/2b3441c06d682f067562d001f3fccfe09fe188e4))
+* ci release ([e4be52c](https://github.com/angelacorte/vmc-experiments/commit/e4be52c3a66de215918d51046c56dd77621fcf05))
+
+
+### General maintenance
+
+* add images for readme ([490b96f](https://github.com/angelacorte/vmc-experiments/commit/490b96f375c572da6f36fd78874dbfb0b2357d2f))
+* **release:** update gradle.properties .env versions to 1.0.0 [skip ci] ([888ecc5](https://github.com/angelacorte/vmc-experiments/commit/888ecc503343fda3268702165b37713a565823bb))
+
 ## 1.0.0 (2024-05-11)
 
 
