@@ -51,13 +51,13 @@ To this end, we designed a set of five experiments:
 ### Reproduce the experiments through Gradle
 
 To reproduce the experiments, 
-    you need to clone this repository on your pc,
-    moving into the root folder and running the following command:
+you need to clone this repository on your pc,
+moving into the root folder and running the following command:
 
 ```shell
 ./gradlew run<ExperimentName>Graphic
 ```
-substituting <ExperimentName> with the name of the experiment (in PascalCase) specified in the YAML simulation file.
+substituting `<ExperimentName>` with the name of the experiment (in PascalCase) specified in the YAML simulation file.
 
 Or execute ```./gradlew tasks``` to view the list of available tasks.
 
@@ -67,3 +67,9 @@ The corresponding YAML simulation files to the experiments cited above are the f
 - _graft_: self-integration of multiple FieldVMC systems (grafting)
 - _graftWithMoreLeaders_: self-segmentation of a larger structure (budding), and
 - _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth).
+
+### Simulations Graphical Interface
+
+The simulation environment and graphical interface are provided by [Alchemist Simulator](https://alchemistsimulator.github.io/index.html).
+To understand how to interact with the GUI,
+please refer to the [Alchemist documentation](https://alchemistsimulator.github.io/reference/swing/index.html#shortcuts).
