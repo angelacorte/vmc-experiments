@@ -1,3 +1,16 @@
+## [1.1.1](https://github.com/angelacorte/vmc-experiments/compare/1.1.0...1.1.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* simulator zoom ratio ([72e5d1f](https://github.com/angelacorte/vmc-experiments/commit/72e5d1fa42244c5613db5040d145c1f7bddd5cb0))
+
+
+### General maintenance
+
+* **release:** update gradle.properties .env versions to 1.1.0 [skip ci] ([7ec812f](https://github.com/angelacorte/vmc-experiments/commit/7ec812f9cd1aa05bb4f835317d4a99e75e77e1d0))
+* update README ([06180b9](https://github.com/angelacorte/vmc-experiments/commit/06180b9017ef05cd3257181f0985a984949c0607))
+
 ## [1.1.0](https://github.com/angelacorte/vmc-experiments/compare/1.0.0...1.1.0) (2024-05-11)
 
 
