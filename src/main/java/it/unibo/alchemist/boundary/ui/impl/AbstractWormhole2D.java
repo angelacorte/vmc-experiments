@@ -218,7 +218,7 @@ public abstract class AbstractWormhole2D<P extends Position2D<? extends P>> impl
     public void optimalZoom() {
         final var size = getViewSize();
         final PointAdapter<P> viewCenter = from(size.getWidth() / 2, size.getHeight() / 2);
-        final var zoom = 80;
+        final var zoom = 10;
         final var adjustedZoom = getEnvRatio() <= getViewRatio()
                 ? zoom * (1 - ZOOM_FACTOR) : zoom * (1 + ZOOM_FACTOR);
         zoomOnPoint(viewCenter.toPoint(), adjustedZoom);
