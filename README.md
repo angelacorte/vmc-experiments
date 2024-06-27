@@ -6,7 +6,8 @@
 - [About](#about)
     * [Experiments](#experiments)
 - [Getting Started](#getting-started)
-- [Reproduce the entire experiment](#reproduce-the-entire-experiment)
+  - [Requirements](#requirements)
+  - [Reproduce the entire experiment](#reproduce-the-entire-experiment)
     * [Reproduce the experiments through Gradle](#reproduce-the-experiments-through-gradle)
     * [Simulations Graphical Interface](#simulations-graphical-interface)
 
