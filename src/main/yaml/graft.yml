@@ -10,9 +10,8 @@ variables:
     default: 0
   radius: &leaderRadius
     100.0
-  leaderInitialResource: &leaderInitialResource
-    type: ArbitraryVariable
-    parameters: [1000, [100, 300, 500, 1000]]
+  maxResource: &maxResource
+    1000.0
   layerX: &layerX
     10
   width: &width
@@ -26,15 +25,11 @@ variables:
   minY: &minY
     0
   maxSuccess: &maxSuccess
-    formula: leaderInitialResource
+    formula: *maxResource
   gaussianShape: &gaussianShape
-    type: ArbitraryVariable
-    parameters: [5, [1, 5, 10]]
+    5
   initialNodes: &initialNodes
     50
-  resourceRadius: &evaluationRadius
-    type: ArbitraryVariable
-    parameters: [6.0, [ 12.0, 15.0, 17.5, 21.5 ] ]
   movingRange: &movingRange
     3.0
 
@@ -47,7 +42,7 @@ layers:
     parameters: [*layerX, *minY, *maxSuccess, *gaussianShape]
     molecule: successSource
   - type: BidimensionalGaussianLayer
-    parameters: [*layerX, *maxY, *leaderInitialResource, *gaussianShape]
+    parameters: [*layerX, *maxY, *maxResource, *gaussianShape]
     molecule: localResource
 
 incarnation: collektive
@@ -77,27 +72,24 @@ deployments:
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
         parameters: [ *maxSuccess ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
         parameters: [ *leaderRadius ]
-      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
-        parameters: [ *evaluationRadius ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
-        parameters: [ *leaderInitialResource ]
+        parameters: [ *maxResource ]
   - type: Rectangle
     parameters: [*initialNodes, *width, 0, *width, *height]
     programs:
       - *program
-
     properties:
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LayerProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.RandomNodeProperty
+      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
       - type: it.unibo.collektive.alchemist.device.sensors.impl.SuccessSensorProperty
         parameters: [ *maxSuccess ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.LeaderSensorProperty
         parameters: [ *leaderRadius ]
-      - type: it.unibo.collektive.alchemist.device.sensors.impl.LocationSensorProperty
-        parameters: [ *evaluationRadius ]
       - type: it.unibo.collektive.alchemist.device.sensors.impl.ResourceSensorProperty
-        parameters: [ *leaderInitialResource ]
+        parameters: [ *maxResource ]
