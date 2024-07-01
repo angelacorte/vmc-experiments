@@ -1,3 +1,23 @@
+## [1.2.0](https://github.com/angelacorte/vmc-experiments/compare/1.1.1...1.2.0) (2024-07-01)
+
+
+### Features
+
+* add quick-start script ([714198e](https://github.com/angelacorte/vmc-experiments/commit/714198e110864e799549a7912f508b84d22fa608))
+
+
+### Bug Fixes
+
+* correct toc ([097803c](https://github.com/angelacorte/vmc-experiments/commit/097803c7763c5a5de52c7a088121c7badaaa6cf3))
+* remove docker commands ([a28fb0c](https://github.com/angelacorte/vmc-experiments/commit/a28fb0c2088470994c577b161e9bb392d70a749a))
+
+
+### General maintenance
+
+* draft update on readme ([c2d73c0](https://github.com/angelacorte/vmc-experiments/commit/c2d73c02f105d9771e18e66c97f793c2da0e9ec4))
+* **release:** update gradle.properties .env versions to 1.1.1 [skip ci] ([5f79ab6](https://github.com/angelacorte/vmc-experiments/commit/5f79ab62dbf5dbb7ffb1304ad1d692910ea8a973))
+* update README ([3586efa](https://github.com/angelacorte/vmc-experiments/commit/3586efa12571c216043c58a8e6df6c5890d6dd18))
+
 ## [1.1.1](https://github.com/angelacorte/vmc-experiments/compare/1.1.0...1.1.1) (2024-05-15)
 
 
