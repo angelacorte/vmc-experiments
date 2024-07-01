@@ -33,7 +33,7 @@ sourceSets {
 }
 
 multiJvm {
-    jvmVersionForCompilation.set(19)
+    jvmVersionForCompilation.set(17)
 }
 
 dependencies {
