@@ -47,7 +47,6 @@ context(
 @JvmOverloads
 fun Aggregate<Int>.spawnAndDestroyAfterStability(
     resourceLowerBound: Double = 1.0,
-//    certainSpawnThreshold: Double = 100.0,
     maxChildren: Int = 5,
     minSpawnWait: Double = 20.0,
 ): Double = with(this@DistanceSensor) {
@@ -82,7 +81,6 @@ fun Aggregate<Int>.spawnAndDestroyAfterStability(
                     selfDestroy()
                     Stability(spawnStable = false, destroyStable = false)
                 }
-//                !enoughTime -> Stability(spawnStable = false, destroyStable = false)
                 neighborPositions.isEmpty() || localResource / (2 + childrenCount) > resourceLowerBound && childrenCount < maxChildren && everyoneIsStable -> {
                     val relativePositions = neighborPositions.map { it - localPosition }
                     val angles = relativePositions.map { atan2(it.second, it.first) }.sorted()
@@ -165,10 +163,3 @@ fun <T> Iterable<T>.randomElementWeighted(by: T.() -> Double): T {
     }
     return last()
 }
-//
-// fun main() {
-//    println(
-// //        Gaussian(2.0, 1.0).value(0.0)
-//        generateSequence { MersenneTwister().nextGaussian() * 0.1 }.take(30).toList()
-//    )
-// }
