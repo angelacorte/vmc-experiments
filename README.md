@@ -1,6 +1,13 @@
 # _An Aggregate Vascular Morphogenesis Controller for Engineered Self-Organising Spatial Structures_
 
-#### Authors temporarily anonymised for double-blind review
+### Authors 
+
+- **Angela Cortecchia** (*) -- angela.cortecchia@unibo.it
+- **Danilo Pianini** (*) -- danilo.pianini@unibo.it
+- **Giovanni Ciatto** (*) -- giovanni.ciatto@unibo.it
+- **Roberto Casadei** (*) -- roby.casadei@unibo.it 
+
+(*) *Department of Computer Science and Engineering | Alma Mater Studiorum -- Università di Bologna | Cesena, Italy*
 
 ### Table of Contents
 - [About](#about)
@@ -9,7 +16,7 @@
   - [Requirements](#requirements)
   - [Reproduce the entire experiment](#reproduce-the-entire-experiment)
     * [Reproduce the experiments through Gradle](#reproduce-the-experiments-through-gradle)
-    * [Simulations Graphical Interface](#simulations-graphical-interface)
+    * [Simulation Graphical Interface](#simulation-graphical-interface)
 
 ## About
 
@@ -57,12 +64,57 @@ To this end, we designed a set of five experiments:
 
 ### Requirements
 
-In order to successfully download and execute the experiments, [Git](https://git-scm.com), [Java](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html) 19 (or higher)
-and [Gradle](https://gradle.org) 8.7 are needed. 
+In order to successfully download and execute the experiments are needed: 
+- Internet connection;
+- [Git](https://git-scm.com);
+- Linux, macOS and Windows systems capable of running [Java](https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html) 17 (or higher);
+- 1GB free space on disk;
+- GPU with minimal OpenGL capabilities (OpenGL 2.0);
+- 4GB RAM.
+
+### Limitations
+
+- The experiments do not generate any form of data to be evaluated on, the evaluation is purely visible at the moment;
+- On different monitor types with different resolutions, the graphical interface could appear a bit different;
+- For GUI interpretation, please refer to [Simulation Graphical Interface](#simulation-graphical-interface) section.
 
 ### Reproduce the entire experiment
 
 **WARNING**: re-running the whole experiment may take a very long time on a normal computer.
+
+#### How to read the experiments
+
+In all the experiments, the cyan area represents the resource and the yellow area the success, with darker shades indicating higher values.
+
+Nodes are represented as circles.
+The root is identified by a dark outer circumference.
+
+The size of a circle depends on the amount of resource and success received
+relative to all other nodes in the system:
+we fix the maximum possible size `D`,
+we compute the maximum amount of resource `R`
+and the maximum amount of success $S$
+across all nodes in the system;
+then, for each node in the system with success $s$ and resource $r$,
+we determine its size $d$ proportionally to $D$ as ``` \displaystyle d=\frac{D (r + s)}{R + S} ```
+
+Their color depends on the amount of resource nodes have
+and is assigned based on the hue of the HSV color space,
+with the most resource associated with indigo,
+and the lowest with red.
+
+Dashed lines are communication channels, solid black lines represent the tree structure, and green (resp. orange) lines depict
+the resource (resp. success) distribution flows, the thicker they are, the more resource (resp. success) is being transferred.
+
+#### Extremely quick-start of a basic experiment -- `(ba|z|fi)?sh` users only
+
+- Requires a Unix terminal (`(ba|z|fi)?sh`)
+- `curl` must be installed
+- run 
+``` 
+curl https://raw.githubusercontent.com/angelacorte/vmc-experiments/master/vmc-basic-example.sh | bash 
+``` 
+- the repository is in your `Downloads` folder for further inspection.
 
 #### Reproduce the experiments through Gradle
 
@@ -70,9 +122,11 @@ and [Gradle](https://gradle.org) 8.7 are needed.
 Use the [Gradle/Java compatibility matrix](https://docs.gradle.org/current/userguide/compatibility.html) to learn which is the compatible version range. 
 The Version of Gradle used in this experiment can be found in the gradle-wrapper.properties file located in the gradle/wrapper folder.
 
-2. Clone this repository on your pc with `git clone git@github.com:angelacorte/vmc-experiments.git` (ssh).
+2. Open a terminal
 
-3. Move into the root folder and run the following command:
+3. Clone this repository on your pc with `git clone git@github.com:angelacorte/vmc-experiments.git` (ssh).
+
+4. Move into the root folder and run the following command:
 
 ```shell
 ./gradlew run<ExperimentName>Graphic
@@ -88,7 +142,13 @@ The corresponding YAML simulation files to the experiments cited above are the f
 - _graftWithMoreLeaders_: self-segmentation of a larger structure (budding) `./gradlew runGraftWithMoreLeadersGraphic`, and
 - _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth) `./gradlew runGraftWithSpawningGraphic`.
 
-#### Simulations Graphical Interface
+**NOTE:**
+The tasks above will run the experiments with the default parameters, that are the one on which the evaluation has been performed.
+
+#### Changing experiment's parameters
+
+
+#### Simulation Graphical Interface
 
 The simulation environment and graphical interface are provided by [Alchemist Simulator](https://alchemistsimulator.github.io/index.html).
 To understand how to interact with the GUI,
