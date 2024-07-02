@@ -6,7 +6,8 @@
 |:-------------------------:|:----------------------:|:-----------------------:|:-----------------------:|
 | angela.cortecchia@unibo.it | danilo.pianini@unibo.it | giovanni.ciatto@unibo.it | roby.casadei@unibo.it   |
 
-(*) *Department of Computer Science and Engineering | Alma Mater Studiorum -- Università di Bologna | Cesena, Italy*
+(*) *Department of Computer Science and Engineering \
+    Alma Mater Studiorum --- Università di Bologna - Cesena, Italy*
 
 [//]: # (- **Angela Cortecchia** &#40;*&#41; -- angela.cortecchia@unibo.it)
 [//]: # (- **Danilo Pianini** &#40;*&#41; -- danilo.pianini@unibo.it)
@@ -22,10 +23,12 @@
   - [Limitations](#limitations)
   - [Reproduce the entire experiment](#reproduce-the-entire-experiment)
     * [Understanding the experiments](#understanding-the-experiments)
+    * [Simulation Graphical Interface](#simulation-graphical-interface)
     * [Extremely quick-start of a basic experiment -- `(ba|z|fi)?sh` users only](#extremely-quick-start-of-a-basic-experiment----bazfish-users-only)
     * [Reproduce the experiments through Gradle](#reproduce-the-experiments-through-gradle)
     * [Changing experiment's parameters](#changing-experiments-parameters)
-    * [Simulation Graphical Interface](#simulation-graphical-interface)
+    * [Simulation entrypoint](#simulation-entrypoint)
+    
 
 ## About
 
@@ -107,6 +110,19 @@ with the most resource associated with indigo, and the lowest with red.\
 Dashed lines are communication channels, solid black lines represent the tree structure, and green (resp. orange) lines depict
 the resource (resp. success) distribution flows, the thicker they are, the more resource (resp. success) is being transferred.
 
+The experiments are:
+- _oneRoot_: self-construction from a single node (growth from seed),
+- _cutting_: self-repair after disruption (network segmentation) with no regeneration (cutting). 
+   The segmentation is performed by removing a part of the structure after 500 simulated seconds, and the nodes are not able to regenerate the missing part;
+- _graft_: self-integration of multiple FieldVMC systems (grafting).
+   Two distinct structures are created, and after 500 simulated seconds, they are merged into a single structure;
+- _graftWithMoreLeaders_: self-segmentation of a larger structure (budding).
+  Two distinct structures are created with possibly more than leader each; after 500 simulated seconds, they are merged into a single structure;
+- _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth).
+  Two distinct structures are created, and after 500 simulated seconds, they are merged into a single structure.
+  During the simulation, nodes are able to spawn new nodes and destroy the ones that are not useful anymore,
+  resulting in an optimized structure.
+
 #### Simulation Graphical Interface
 
 The simulation environment and graphical interface are provided by [Alchemist Simulator](https://alchemistsimulator.github.io/index.html).
@@ -141,11 +157,11 @@ The Version of Gradle used in this experiment can be found in the gradle-wrapper
    Or execute ```./gradlew tasks``` to view the list of available tasks.
 
 The corresponding YAML simulation files to the experiments cited above are the following:
-- _oneRoot_: self-construction from a single node (growth from seed) `./gradlew runOneRootGraphic`,
-- _cutting_: self-repair after disruption (network segmentation) with no regeneration (cutting) `./gradlew runCuttingGraphic`, 
-- _graft_: self-integration of multiple FieldVMC systems (grafting) `./gradlew runGraftGraphic`,
-- _graftWithMoreLeaders_: self-segmentation of a larger structure (budding) `./gradlew runGraftWithMoreLeadersGraphic`, and
-- _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth) `./gradlew runGraftWithSpawningGraphic`.
+- _oneRoot_: self-construction from a single node (growth from seed) ```./gradlew runOneRootGraphic```,
+- _cutting_: self-repair after disruption (network segmentation) with no regeneration (cutting) ```./gradlew runCuttingGraphic```, 
+- _graft_: self-integration of multiple FieldVMC systems (grafting) ```./gradlew runGraftGraphic```,
+- _graftWithMoreLeaders_: self-segmentation of a larger structure (budding) ```./gradlew runGraftWithMoreLeadersGraphic```, and
+- _graftWithSpawning_: self-optimisation of multiple large structures into a more efficient one (abscission and regrowth) ```./gradlew runGraftWithSpawningGraphic```.
 
 **NOTE:**
 The tasks above will run the experiments with the default parameters, that are the one on which the evaluation has been performed.
@@ -159,14 +175,35 @@ The parameters that can be changed are:
 - `maxSuccess`: the maximum success available inside the environment (usually set to the same value of `maxResource`);
 - `initialNodes`: the number of nodes to be created at the beginning of the simulation 
   (except for the _oneRoot_ experiment, which starts with a single node);
-- `killingRange`: (for the _cutting_ experiment) the range within the nodes are removed;
-- `layerX`:
-- `width`:
-- `height`:
-- `maxY`:
-- `minY`:
-- `gaussianShape`: 
-- `evaluationRadius`:
+- `resourceLowerBound`: the minimum amount of resource that a node can have in order not to die (for the _oneRoot_ and _graftWithSpawning_ experiments);
+- `maxChildren`: the maximum number of children a node can have (for the _oneRoot_ and _graftWithSpawning_ experiments);
+- `minSpanWait`: the minimum time a node has to wait before spawning a new node (for the _oneRoot_ and _graftWithSpawning_ experiments);
+- `killingRange`: the range within the nodes are removed (for the _cutting_ experiment);
+- `layerX`: the position of the resource and success layer on the x-axis;
+- `layerY`: the position of the resource and success layer on the Y-axis (for the _oneRoot_ experiments);
+- `maxY` & `minY`: position of the layer on the y-axis (for every experiment except _oneRoot_);
+- `width` & `height`: the width and height of the rectangle in which the nodes are placed, 
+  used to simplify the management of the nodes' translation (for every experiment except _oneRoot_);  
+- `gaussianShape`: the shape of the Gaussian distribution used for the resource and success layer.
 
 For further information about the YAML structure, 
 please refer to the [Alchemist documentation](https://alchemistsimulator.github.io/reference/yaml/index.html).
+
+#### Simulation entrypoint
+The simulations in which nodes are able to spawn new nodes are the _oneRoot_ and _graftWithSpawning_ experiments.
+Their entrypoint can be found at `src/main/kotlin/it/unibo/collektive/vmc/VMCSpawning.kt`. 
+The program takes as input the aggregate function `withSpawning()`, which uses a function that implements the spawning (and killing) logic.\
+Shortly, a node can spawn if:
+- it has enough resources to spawn a new node and remain alive;
+- it has less than the maximum number of spawn-able children, 
+- it has been stable for at least the minimum time required;
+or it is the only node in his surroundings.
+
+Similarly, a node can die if:
+- it has less than the minimum amount of resources required to survive;
+- it has no children;
+- it has been stable for at least the minimum time required.
+
+The simulations that do not involve the spawning of new nodes are the _cutting_, _graft_, and _graftWithMoreLeaders_ experiments.
+Their entrypoint can be found at `src/main/kotlin/it/unibo/collektive/vmc/VMCWithoutSpawning.kt`.
+It simply uses aggregate functions to elect leaders and manage the resource and success distribution.
