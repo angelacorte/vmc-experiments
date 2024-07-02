@@ -44,12 +44,7 @@ context(
     RandomGenerator,
     DistanceSensor
 )
-@JvmOverloads
-fun Aggregate<Int>.spawnAndDestroyAfterStability(
-    resourceLowerBound: Double = 1.0,
-    maxChildren: Int = 5,
-    minSpawnWait: Double = 20.0,
-): Double = with(this@DistanceSensor) {
+fun Aggregate<Int>.spawnAndDestroyAfterStability(): Double = with(this@DistanceSensor) {
     vmc { potential: Double, localSuccess: Double, success: Double, localResource: Double ->
         val children = neighboring(findParent(potential))
         set("children-around", children)
