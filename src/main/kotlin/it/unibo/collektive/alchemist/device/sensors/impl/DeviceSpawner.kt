@@ -16,9 +16,11 @@ class DeviceSpawner<T, P : Position<P>> @JvmOverloads constructor(
     private val environment: Environment<T, P>,
     override val node: Node<T>,
     override val cloningRange: Double = 1.0,
+    override val maxChildren: Int,
+    override val minSpawnWait: Double = 20.0,
 ) : DeviceSpawn, NodeProperty<T> {
     override fun cloneOnNewNode(node: Node<T>): NodeProperty<T> =
-        DeviceSpawner(randomGenerator, environment, node, cloningRange)
+        DeviceSpawner(randomGenerator, environment, node, cloningRange, maxChildren, minSpawnWait)
 
     override fun spawn(
         coordinate: Pair<Double, Double>,

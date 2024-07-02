@@ -11,7 +11,7 @@ interface DeviceSpawn {
 
     val cloningRange: Double
 
-//    fun <ID : Any> Aggregate<ID>.spawnWithRatio(): Boolean
-//
-//    fun spawnWithChildsNumber(): Boolean
+    val maxChildren: Int
+
+    val minSpawnWait: Double
 }
