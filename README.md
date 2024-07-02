@@ -98,10 +98,10 @@ In all the experiments, the cyan area represents the resource and the yellow are
 Nodes are represented as circles.
 The root is identified by a dark outer circumference.\
 The size of a circle depends on the amount of resource and success received
-relative to all other nodes in the system: we fix the maximum possible size `D`, we compute the maximum amount of resource `R`
+relative to all other nodes in the system: we fix the maximum possible size $D$, we compute the maximum amount of resource $R$
 and the maximum amount of success $S$ across all nodes in the system;
 then, for each node in the system with success $s$ and resource $r$,
-we determine its size $d$ proportionally to $D$ as ``` \displaystyle d=\frac{D (r + s)}{R + S} ``` \
+we determine its size $d$ proportionally to $D$ as $d=\frac{D (r + s)}{R + S}$. \
 Their color depends on the amount of resource nodes have and is assigned based on the hue of the HSV color space,
 with the most resource associated with indigo, and the lowest with red.\
 Dashed lines are communication channels, solid black lines represent the tree structure, and green (resp. orange) lines depict
