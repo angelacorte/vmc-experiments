@@ -1,3 +1,31 @@
+## [1.3.0](https://github.com/angelacorte/vmc-experiments/compare/1.2.0...1.3.0) (2024-07-02)
+
+
+### Features
+
+* add variable to resource sensor ([911bc59](https://github.com/angelacorte/vmc-experiments/commit/911bc5917509d5da02ec7b6f4e14c65f8d13f63b))
+* add variables to device spawner ([a4d7cb1](https://github.com/angelacorte/vmc-experiments/commit/a4d7cb1ee1442371275af61935f5ead4844ab801))
+
+
+### Bug Fixes
+
+* update readme ([9ee0c2d](https://github.com/angelacorte/vmc-experiments/commit/9ee0c2d0ec649696dec20b4fe12ec013d6e0b76e))
+
+
+### General maintenance
+
+* draft update on readme ([484605c](https://github.com/angelacorte/vmc-experiments/commit/484605ca5353fea4630f67010bd6355cacc11a36))
+* fix formula ([0c09f2a](https://github.com/angelacorte/vmc-experiments/commit/0c09f2a053c15fd10fc911d28a6f300dace0f796))
+* **release:** update gradle.properties .env versions to 1.2.0 [skip ci] ([f18b890](https://github.com/angelacorte/vmc-experiments/commit/f18b8904b28877680149819635db46d024f214ea))
+
+
+### Refactoring
+
+* remove comments ([ddf4d4b](https://github.com/angelacorte/vmc-experiments/commit/ddf4d4bfa03b84acf80e6992cbc4e113cf8ad340))
+* remove useless parameters ([83f8b69](https://github.com/angelacorte/vmc-experiments/commit/83f8b6900c7031a24fd270298789acd76ddb5a5c))
+* remove useless variables ([fce1dfb](https://github.com/angelacorte/vmc-experiments/commit/fce1dfbc18dc245ab64a227680a8ad4e1c78fc77))
+* variables and entrypoints ([f3c671b](https://github.com/angelacorte/vmc-experiments/commit/f3c671b025f8d8b0979d39c8f679bea0a07ab94f))
+
 ## [1.2.0](https://github.com/angelacorte/vmc-experiments/compare/1.1.1...1.2.0) (2024-07-01)
 
 
