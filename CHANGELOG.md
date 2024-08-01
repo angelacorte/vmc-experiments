@@ -1,3 +1,15 @@
+## [1.3.1](https://github.com/angelacorte/vmc-experiments/compare/1.3.0...1.3.1) (2024-08-01)
+
+
+### Documentation
+
+* add documentation to main functions ([8cf4eef](https://github.com/angelacorte/vmc-experiments/commit/8cf4eef078abe9c7c0d2c298fb1f97e710033489))
+
+
+### General maintenance
+
+* **release:** update gradle.properties .env versions to 1.3.0 [skip ci] ([fc6baaf](https://github.com/angelacorte/vmc-experiments/commit/fc6baaf3ea811fb2c23a08e17a8e8dc44559b7d1))
+
 ## [1.3.0](https://github.com/angelacorte/vmc-experiments/compare/1.2.0...1.3.0) (2024-07-02)
 
 
