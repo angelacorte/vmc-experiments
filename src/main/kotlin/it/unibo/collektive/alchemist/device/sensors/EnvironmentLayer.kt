@@ -1,5 +1,8 @@
 package it.unibo.collektive.alchemist.device.sensors
 
+/**
+ * A layer of the environment that can be accessed by the devices.
+ */
 interface EnvironmentLayer {
     fun <T> getFromLayer(name: String): T
 

@@ -8,6 +8,9 @@ import it.unibo.collektive.field.min
 import it.unibo.collektive.field.plus
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
+/**
+ *
+ */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Double =
     share(initial) { field ->
@@ -25,14 +28,23 @@ fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Dou
         }
     }
 
+/**
+ * Evaluate the distance from the [source].
+ */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.distanceTo(source: Boolean): Double =
     gradientCast(source, if (source) 0.0 else POSITIVE_INFINITY)
 
+/**
+ * Evaluate the distance between the [source] and the [destination].
+ */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.distanceBetween(source: Boolean, destination: Boolean): Double =
     broadcast(source, distanceTo(destination)) { it }
 
+/**
+ * Broadcast the [value] from the [source] to the neighbors.
+ */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.broadcast(source: Boolean, value: Double, accumulator: (Double) -> Double): Double =
     share(POSITIVE_INFINITY to value) { field ->

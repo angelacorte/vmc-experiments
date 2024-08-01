@@ -22,6 +22,9 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
+/**
+ * Entrypoint of the VMC algorithm, using spawning and destroying after stability policies.
+ */
 context(
     EnvironmentVariables,
     DeviceSpawn,
@@ -34,6 +37,13 @@ context(
 )
 fun Aggregate<Int>.withSpawning(): Double = spawnAndDestroyAfterStability()
 
+/**
+ * Spawns a new node or destroys an old one if the conditions are met.
+ * The node is spawned if the local resource is above the lower bound,
+ * if it has less than a maximum of children and the neighborhood is stable.
+ * The node is destroyed if the local resource is below the lower bound,
+ * if it is not father of any node and the neighborhood is stable.
+ */
 context(
     EnvironmentVariables,
     DeviceSpawn,
@@ -119,6 +129,12 @@ fun Aggregate<Int>.spawnAndDestroyAfterStability(): Double = with(this@DistanceS
     }
 }
 
+/**
+ * The VMC algorithm with the spawning and destroying of nodes.
+ * First it elects the leader, then it calculates the potential,
+ * the local success, and the overall success of the children.
+ * Finally, it calculates the local resource and checks the spawn and destroy policies.
+ */
 context(
     EnvironmentVariables,
     DistanceSensor,

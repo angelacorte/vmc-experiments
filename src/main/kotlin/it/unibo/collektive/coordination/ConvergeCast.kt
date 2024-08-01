@@ -33,6 +33,9 @@ fun <T, ID : Comparable<ID>> Aggregate<ID>.convergeCast(
     }
 }
 
+/**
+ * Spreads the [localResource] to the children of this device, according to the [localSuccess] of each child.
+ */
 context(EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
     potential: Double,
@@ -62,6 +65,9 @@ fun <ID : Comparable<ID>> Aggregate<ID>.spreadToChildren(
         }
 }.localValue
 
+/**
+ * Finds the parent of this device in the spanning tree built according to the maximum decrease in [potential].
+ */
 fun <ID : Comparable<ID>> Aggregate<ID>.findParent(
     potential: Double,
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },

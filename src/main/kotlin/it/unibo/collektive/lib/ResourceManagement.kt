@@ -7,6 +7,9 @@ import it.unibo.collektive.alchemist.device.sensors.LocationSensor
 import it.unibo.collektive.alchemist.device.sensors.ResourceSensor
 import it.unibo.collektive.coordination.spreadToChildren
 
+/**
+ * Spreads the available resources to the children of this device, according to the [localSuccess] of each child.
+ */
 context(ResourceSensor, LeaderSensor, LocationSensor, EnvironmentVariables)
 fun <ID : Comparable<ID>> Aggregate<ID>.spreadResource(
     potential: Double,

@@ -6,6 +6,9 @@ import it.unibo.collektive.aggregate.api.operators.share
 import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 
+/**
+ * Elect the leader in an area limited by the [radius], based on the [localStrength] of the device.
+ */
 context(DistanceSensor)
 fun <ID : Any, C : Comparable<C>> Aggregate<ID>.boundedElection(
     localStrength: C,
