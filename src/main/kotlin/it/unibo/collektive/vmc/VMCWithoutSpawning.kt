@@ -18,7 +18,7 @@ import it.unibo.collektive.lib.spreadResource
  * The VMC algorithm without spawning and destroying after stability policies.
  * First it elects the leader, then it calculates the potential,
  * the local success, and the overall success of the children.
- * Finally, it calculates the local resource.
+ * Finally, it calculates and returns the local resource.
  */
 context(
     DistanceSensor,

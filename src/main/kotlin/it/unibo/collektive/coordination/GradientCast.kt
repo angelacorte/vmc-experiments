@@ -9,7 +9,8 @@ import it.unibo.collektive.field.plus
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
 /**
- *
+ * Propagates the minimum value (or the [initial] if the minimum is infinity) through the gradient.
+ * If the node is the [source], it will propagate zero.
  */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Double =
@@ -29,7 +30,7 @@ fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Dou
     }
 
 /**
- * Evaluate the distance from the [source].
+ * Evaluate the distance of the node from the [source].
  */
 context(DistanceSensor)
 fun <ID : Any> Aggregate<ID>.distanceTo(source: Boolean): Double =

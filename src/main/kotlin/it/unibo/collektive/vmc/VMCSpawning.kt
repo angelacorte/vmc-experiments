@@ -39,9 +39,9 @@ fun Aggregate<Int>.withSpawning(): Double = spawnAndDestroyAfterStability()
 
 /**
  * Spawns a new node or destroys an old one if the conditions are met.
- * The node is spawned if the local resource is above the lower bound,
- * if it has less than a maximum of children and the neighborhood is stable.
- * The node is destroyed if the local resource is below the lower bound,
+ * The node is spawned if the local resources are above the lower bound threshold,
+ * if it has less than a maximum threshold of children and the neighborhood is stable.
+ * The node is destroyed if the local resources are below the lower bound,
  * if it is not father of any node and the neighborhood is stable.
  */
 context(
