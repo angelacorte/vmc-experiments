@@ -133,28 +133,31 @@ Once the simulation has started, the Alchemist GUI will open.
 After the time needed for Alchemist to load the simulation,
 it will show the initial structure, that is a single black point representing the root node,
 in between the resource (cyan gradient) and success (yellow gradient) layers.
+For more details about the appearance and meaning of the different shapes etc.
+can be found in the section [Understanding the experiments](#understanding-the-experiments).
 Now the simulation can be started by pressing the P key on the keyboard.
 By pressing the P key again, the simulation will pause (and resume).
 The simulation can appear really fast, to execute it at "real time" speed,
 press the R key (and again to return to the fast speed).
+For other features of the GUI please refer to the [Simulation Graphical Interface](#simulation-graphical-interface) section.
 
 As seen in the sequence below,
 the structure evolves from a single node to a more complex structure.
-Firstly, the structure tries to reach more resources,
-spawning new nodes based on local conditions, resulting in an expansion towards the center of the resource layer, 
-and electing as leader the node with the most resources.
-Then,
-once the root is stable, 
+Firstly, the structure results to expand towards the center of the available resources.
+This happens because the spawned nodes are in a zone with higher resources, 
+used as weight in the leader election phase, 
+thus the newly created node gets elected as the new leader,
+which results in an expansion towards the center of the resource layer.
+While the root gains more resources, 
 nodes will spawn children based on their local success, 
-meaning that the nodes which sense more success from the environment have higher probability to spawn new children,
+meaning that the nodes which sense more success from the environment have higher probability and capabilities to spawn new children,
 resulting in an expansion towards the center of the success layer.
-Once the structure has reached the optimal configuration,
-the nodes start to stabilize,
+The structure then stabilizes in what appears to be the optimal configuration,
 and the structure stops evolving.
 
 <figure>
   <img src="images/oneroot.gif" alt="One root sequence">
-  <figcaption>Sequence of images showing the evolution of the structure in the <i>oneRoot</i> experiment.</figcaption>
+  <figcaption>Sequence of images showing the evolution in time of the structure in the <i>oneRoot</i> experiment.</figcaption>
 </figure>
 
 
