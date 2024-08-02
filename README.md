@@ -133,13 +133,14 @@ Once the simulation has started, the Alchemist GUI will open.
 After the time needed for Alchemist to load the simulation,
 it will show the initial structure, that is a single black point representing the root node,
 in between the resource (cyan gradient) and success (yellow gradient) layers.
-For more details about the appearance and meaning of the different shapes etc.
-can be found in the section [Understanding the experiments](#understanding-the-experiments).
-Now the simulation can be started by pressing the P key on the keyboard.
-By pressing the P key again, the simulation will pause (and resume).
-The simulation can appear really fast, to execute it at "real time" speed,
-press the R key (and again to return to the fast speed).
-For other features of the GUI please refer to the [Simulation Graphical Interface](#simulation-graphical-interface) section.
+For more details of the simulation (e.g., the appearance, the meaning of the different shapes, etc.)
+see section [Understanding the experiments](#understanding-the-experiments).
+Now the simulation can be started by pressing the <kbd>P</kbd> key on the keyboard.
+By pressing the <kbd>P</kbd> key again, the simulation will pause (and resume).
+When the simulation starts, 
+if you wish to execute it at "real time" speed,
+press the <kbd>R</kbd> key (and again to return to the fast speed).
+For other features of the GUI, please refer to the [Simulation Graphical Interface](#simulation-graphical-interface) section.
 
 As seen in the sequence below,
 the structure evolves from a single node to a more complex structure.
