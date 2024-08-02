@@ -141,10 +141,13 @@ press the R key (and again to return to the fast speed).
 As seen in the sequence below,
 the structure evolves from a single node to a more complex structure.
 Firstly, the structure tries to reach more resources,
-spawning new nodes in the direction of the resource layer and electing as leader the node with the most resources.
+spawning new nodes based on local conditions, resulting in an expansion towards the center of the resource layer, 
+and electing as leader the node with the most resources.
 Then,
-once reached its goal,
-it starts to grow in the direction of the success layer.
+once the root is stable, 
+nodes will spawn children based on their local success, 
+meaning that the nodes which sense more success from the environment have higher probability to spawn new children,
+resulting in an expansion towards the center of the success layer.
 Once the structure has reached the optimal configuration,
 the nodes start to stabilize,
 and the structure stops evolving.
