@@ -1,3 +1,21 @@
+## [1.3.2](https://github.com/angelacorte/vmc-experiments/compare/1.3.1...1.3.2) (2024-08-02)
+
+
+### Bug Fixes
+
+* silence alchemist verbosity ([be520e2](https://github.com/angelacorte/vmc-experiments/commit/be520e20c53c8cc30f1b9a832cc4105c3abf69e1))
+* update readme ([4f81d59](https://github.com/angelacorte/vmc-experiments/commit/4f81d59d7ecdec6db70d1b9dec07864908cf63f3))
+
+
+### Documentation
+
+* add documentation to main functions ([d139d51](https://github.com/angelacorte/vmc-experiments/commit/d139d51eba00e72cbc59cddafa2213b0fc839c5a))
+
+
+### General maintenance
+
+* **release:** update gradle.properties .env versions to 1.3.1 [skip ci] ([ffb2fc6](https://github.com/angelacorte/vmc-experiments/commit/ffb2fc69b99c55931069fa268c7fb3749f0fde7a))
+
 ## [1.3.1](https://github.com/angelacorte/vmc-experiments/compare/1.3.0...1.3.1) (2024-08-01)
 
 
