@@ -6,4 +6,6 @@ build/
 charts/
 data_summary_*
 timeprocessed
-/.kotlin/
+.DS_Store
+.kotlin/
+.env
