@@ -4,4 +4,5 @@
       "github>DanySK/renovate-config"
    ],
    "includeForks": true
+   "assignees": [ "angelacorte" ]
 }
