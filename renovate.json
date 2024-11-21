@@ -3,6 +3,6 @@
    "extends": [
       "github>DanySK/renovate-config"
    ],
-   "includeForks": true
+   "includeForks": true,
    "assignees": [ "angelacorte" ]
 }
