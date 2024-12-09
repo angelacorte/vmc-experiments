@@ -6,7 +6,7 @@ import it.unibo.collektive.alchemist.device.sensors.EnvironmentVariables
 import it.unibo.collektive.field.Field
 import it.unibo.collektive.field.Field.Companion.fold
 import it.unibo.collektive.field.Field.Companion.hood
-import it.unibo.collektive.field.min
+import it.unibo.collektive.field.operations.min
 
 // A field mapping input channels to this device to the value channelled in
 data class Channel<T>(val isFromChild: Boolean, val localValue: T)
@@ -73,7 +73,7 @@ fun <ID : Comparable<ID>> Aggregate<ID>.findParent(
     disambiguateParent: (ID, ID) -> ID = { a, b -> minOf(a, b) },
 ): ID {
     val neighboringPotential = neighboring(potential)
-    val localMinimum = neighboringPotential.min(potential)
+    val localMinimum: Double = neighboringPotential.min(potential)
     return neighboringPotential.asSequence()
         .filter { (_, v) -> v == localMinimum }
         .map { it.first }
