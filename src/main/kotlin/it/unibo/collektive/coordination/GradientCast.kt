@@ -4,8 +4,8 @@ import it.unibo.alchemist.collektive.device.DistanceSensor
 import it.unibo.collektive.aggregate.api.Aggregate
 import it.unibo.collektive.aggregate.api.operators.share
 import it.unibo.collektive.field.Field.Companion.fold
-import it.unibo.collektive.field.min
-import it.unibo.collektive.field.plus
+import it.unibo.collektive.field.operations.min
+import it.unibo.collektive.stdlib.doubles.FieldedDoubles.plus
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
 /**
@@ -19,7 +19,7 @@ fun <ID : Any> Aggregate<ID>.gradientCast(source: Boolean, initial: Double): Dou
         when (source) {
             true -> 0.0
             else -> {
-                val min = (field + dist).min(POSITIVE_INFINITY)
+                val min: Double = (field + dist).min(POSITIVE_INFINITY)
                 if (min == POSITIVE_INFINITY) {
                     initial
                 } else {
