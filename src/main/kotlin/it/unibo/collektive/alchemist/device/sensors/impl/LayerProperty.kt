@@ -17,12 +17,12 @@ class LayerProperty<T, P : Position<P>>(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> getFromLayer(name: String): T =
-        environment.getLayer(SimpleMolecule(name)).getOrNull()?.getValue(environment.getPosition(node)) as T
+        environment.getLayer(SimpleMolecule(name))?.getValue(environment.getPosition(node)) as T
 
     override fun <T> getFromLayerOrNull(name: String): T? =
         if (isLayerDefined(name)) getFromLayer(name) else null
 
-    override fun isLayerDefined(name: String): Boolean = environment.getLayer(SimpleMolecule(name)).isPresent
+    override fun isLayerDefined(name: String): Boolean = environment.getLayer(SimpleMolecule(name)) != null
 
     override fun <T> getFromLayerOrDefault(name: String, default: T): T =
         getFromLayer(name) ?: default
