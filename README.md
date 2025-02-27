@@ -1,3 +1,10 @@
+This repository has been archived, and it is no longer maintained. 
+You can find the submission to the conference in the [Zenodo repository](https://zenodo.org/record/13172244).
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13172244.svg)](https://doi.org/10.5281/zenodo.13172244)
+
+Paper DOI: [10.1109/ACSOS61780.2024.00032](https://doi.org/10.1109/ACSOS61780.2024.00032)
+---------------------------
+
 # _An Aggregate Vascular Morphogenesis Controller for Engineered Self-Organising Spatial Structures_
 
 ### Authors 
